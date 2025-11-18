@@ -53,7 +53,33 @@
                                     <td class="d-flex justify-center">
                                         <a href="#" class="btn btn-secondary btn-sm"><i class="fas fa-check"></i> Asignar permisos</a>
                                         <a href="{{ url('admin/rol/'.$role->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
-                                        <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                                        <form action="{{ url('admin/rol/' .$role->id) }}" method="post" id="miFormulario{{ $role->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="preguntar{{ $role->id }} (event)">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                        </form>
+                                        <script>
+                                            function preguntar{{ $role->id }} (evento) {
+                                                evento.preventDefault();
+
+                                                Swal.fire({
+                                                    title: '¿Estás seguro que desea eliminar?',
+                                                    text: '',
+                                                    icon: 'question',
+                                                    showDenyButton: true,
+                                                    confirmButtonText: 'Sí, eliminar',
+                                                    confirmButtonColor: '#dc3545',
+                                                    denyButtonColor: '#6e7176',
+                                                    denyButtonText: 'Cancelar',                                                    
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        document.getElementById('miFormulario{{ $role->id }}').submit(); //java script para enviar el formulario
+                                                    } 
+                                                } );
+                                            } 
+                                        </script>
                                     </td>
                                 </tr>
                                 @endforeach
