@@ -49,13 +49,13 @@ class AjusteController extends Controller
             'pagina_web' => 'nullable|url|max:255',
         ];
 
-        if($ajuste || !$ajuste->logo){
+        if($ajuste && !$ajuste->logo){
             // Si el ajuste ya existe, el logo y logo_auto no son obligatorios
             $rules['logo'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
         }else{
             $rules['logo'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
         }
-        if($ajuste || !$ajuste->logo_auto){
+        if($ajuste && !$ajuste->logo_auto){
             $rules['logo_auto'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
         }else{
             $rules['logo_auto'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
