@@ -22,6 +22,9 @@
 @stop
 
 @section('content')
+
+<form action="{{ url('/admin/usuarios/create') }}" method="POST">
+                    @csrf
     <div class="row">
         <div class="col-md-12">
             <div class="card card-secondary">
@@ -30,8 +33,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">      
-                <form action="{{ url('/admin/usuarios/create') }}" method="POST">
-                    @csrf
+                
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -208,8 +210,7 @@
                             </div>
                         </div>
                     
-                </form>
-            </div>
+                </div>
             <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -286,6 +287,7 @@
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
         </div>
     </div>
+</form>
 
 @stop
 
