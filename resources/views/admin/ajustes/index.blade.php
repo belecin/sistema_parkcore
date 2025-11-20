@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group"> 
-                                            <label for="telefonos">Telefonos</label><b> (*)</b>
+                                            <label for="telefonos">Telefono</label><b> (*)</b>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
@@ -206,7 +206,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="file" class="form-control" name="logo" id="logo" 
-                                                    accept="image/*" onchange="mostrarImagen(event)" @if(!isset($ajuste) && $ajuste->logo) required @endif>                                            
+                                                    accept="image/*" onchange="mostrarImagen(event)" @if(isset($ajuste) && $ajuste->logo) required @endif>                                            
                                             </div>
                                             <center>
                                                 @if (isset($ajuste) && $ajuste->logo)
@@ -239,7 +239,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="file" class="form-control" name="logo_auto" id="logo_auto" 
-                                                    accept="image/*" onchange="mostrarImagen2(event)" @if(!isset($ajuste) && $ajuste->logo_auto) required @endif>                                           
+                                                    accept="image/*" onchange="mostrarImagen2(event)" @if(isset($ajuste) && $ajuste->logo_auto) required @endif>                                           
                                             </div>
                                             <center>
                                                 @if (isset($ajuste) && $ajuste->logo_auto)

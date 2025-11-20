@@ -319,6 +319,12 @@ return [
             'icon' => 'fas fa-fw fa-user-shield',
             'classes' => 'bg-white text-black',
         ],
+        [
+            'text' => 'Usuarios',
+            'url' => 'admin/usuarios',
+            'icon' => 'fas fa-fw fa-users',
+            'classes' => 'bg-white text-black',
+        ],
 
         ['header' => 'Ajustes'],
         [
@@ -417,20 +423,19 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'http://cdnjs.cloudflare.com/ajax/lids/jszip/3.10.1/jszip.min.js',
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'http://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js',
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'http://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js',
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js',
                 ],
                 
-
             ],
         ],
         'Select2' => [
