@@ -36,6 +36,7 @@ class UserController extends Controller
     {
         //return response()->json($request->all());
         $request->validate([
+            'rol' => 'required',
             'email' => 'required|string|email|max:255|unique:users',
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
@@ -70,6 +71,12 @@ class UserController extends Controller
         $usuario->save();
 
         Mail::to($usuario->email)->send(new RegistroUsuarioMail($usuario, $passwordTemporal));
+
+        $usuario->assignRole($request->rol);
+
+        return redirect()->route('admin.usuarios.index')
+        ->with('mensaje', 'Usuario registrado correctamente')
+        ->with('icono','success');
 
     }
 
