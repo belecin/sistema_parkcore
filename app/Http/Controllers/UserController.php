@@ -93,17 +93,56 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $usuario = User::find($id);
+        $roles = Role::all();
+        return  view('admin.usuarios.edit', compact('usuario','roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        //return response()->json($request->all());
+        $usuario = User::find($id);
+        $request->validate([
+            'rol' => 'required',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'tipo_documento' => 'required|in:DNI,Carnet Extranjeria,Pasaporte,RUC',
+            'nro_documento' => 'required|string|max:255|unique:users,nro_documento,'.$id,
+            'celular' => 'required|string|max:20',
+            'fecha_nacimiento' => 'required|date',
+            'genero' => 'required|in:Masculino,Femenino',
+            'direccion' => 'required|string|max:500',
+            'contacto_nombre' => 'required|string|max:255',
+            'contacto_telefono' => 'required|string|max:20',
+            'contacto_parentesco' => 'required|string|max:100',
+        ]);
+
+        $usuario->name = $request->nombres . ' ' . $request->apellidos;
+        $usuario->email = $request->email;
+        $usuario->nombres = $request->nombres;
+        $usuario->apellidos = $request->apellidos;
+        $usuario->tipo_documento = $request->tipo_documento;
+        $usuario->nro_documento = $request->nro_documento;
+        $usuario->celular = $request->celular;
+        $usuario->fecha_nacimiento = $request->fecha_nacimiento;
+        $usuario->genero = $request->genero;
+        $usuario->direccion = $request->direccion;
+        $usuario->contacto_nombre = $request->contacto_nombre;
+        $usuario->contacto_telefono = $request->contacto_telefono;
+        $usuario->contacto_parentesco = $request->contacto_parentesco;       
+        $usuario->save();
+
+        $usuario->syncRoles($request->rol);
+
+        return redirect()->route('admin.usuarios.index')
+        ->with('mensaje', 'Usuario actualizado correctamente')
+        ->with('icono','success');
     }
 
     /**
