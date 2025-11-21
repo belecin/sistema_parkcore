@@ -61,7 +61,14 @@
                                     <td>{{ $usuario->tipo_documento }}</td>
                                     <td>{{ $usuario->nro_documento }}</td>
                                     <td>{{ $usuario->celular }}</td>
-                                    <td>{{ $usuario->estado }}</td>
+                                    <td style="text-align: center">
+                                        @if ($usuario->estado == 1)
+                                            <span class="badge badge-success" >Activo</span>                                           
+                                        @else
+                                            <span class="badge badge-danger" >Inactivo</span>
+                                        @endif
+                                                                                
+                                    </td>
 
                                     <td class="d-flex justify-center">
                                         <a href="{{ url('admin/usuario/'.$usuario->id) }}" class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> Ver</a>
