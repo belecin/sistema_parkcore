@@ -58,7 +58,8 @@
                                 <select class="form-control" name="estado" id="estado" required>
                                     <option value="libre" value={{ old('estado') == 'libre' ? 'selected' : '' }} >libre</option>
                                     <option value="ocupado" value={{ old('estado') == 'ocupado' ? 'selected' : '' }} >Ocupado</option>
-                                    <option value="mantenimiento" value={{ old('estado') == 'mantenimiento' ? 'selected' : '' }} >Mantenimiento</option>
+                                    <option value="mantenimiento" value={{ old('estado') == 'mantenimiento' ? 'selected' : '' }} >Mantenimiento
+                                    </option>
                                 </select>
                             </div>
                                 @error('estado')

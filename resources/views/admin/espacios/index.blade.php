@@ -36,12 +36,64 @@
             <div class="card-body">      
                 <div class="row">
                     @foreach ($espacios as $espacio)
-                        <div class="col">
+                        <div class="col" style="text-align: center">
                         <h2>{{ $espacio->numero }}</h2>  
-                        <button class="btn btn-success">
-                            <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 200px; margin-top: 10px;">
+                        <button 
+                            @if ($espacio->estado == "libre") class="btn btn-white border border-dark"@endif
+                            @if ($espacio->estado == "mantenimiento") class="btn btn-warning "@endif
+                            @if ($espacio->estado == "ocupado") class="btn btn-danger "@endif 
+                            data-toggle="modal" 
+                            data-target="#modal_cambiar_estado{{ $espacio->id }}" >
+                                <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 100px; margin-top: 10px;">
                         </button>  
-                        <h3>{{ $espacio->estado }}</h3>
+                        
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal_cambiar_estado{{ $espacio->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(27, 152, 108);color:white">
+                                <h5 class="modal-title" id="exampleModalLabel">Cambiar el estado del espacio {{ $espacio->numero }} </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url('/admin/espacio/' .$espacio->id) }}" method="post">
+                                @csrf 
+                                @method('PUT')
+                                    <div class="row">
+                                        <label for="estado">Estado</label><b> (*)</b>
+                                            <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
+                                            </div>
+                                            <select class="form-control" name="estado" id="estado" 
+                                            required>
+                                            <option value="">Seleccione un espacio ...</option>
+                                                <option value="libre" value={{ old('estado') == 'libre' ? 'selected' : '' }} >libre</option>
+                                                <option value="ocupado" value={{ old('estado') == 'ocupado' ? 'selected' : '' }} >Ocupado</option>
+                                                <option value="mantenimiento" value={{ old('estado') == 'mantenimiento' ? 'selected' : '' }} >Mantenimiento
+                                                </option>
+                                            </select>
+                                            </div>
+                                            @error('estado')
+                                                <small style="color: red">{{ $message }}</small>                           
+                                            @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn bg-success ">Guardar</button>
+                                        </div>
+                                        </div>
+                                </form>
+                                </div>
+                            </div>                            
+                        </div>
+
+                            <h5>{{ $espacio->estado }}</h5>
                         </div>
                     @endforeach
                     </div>

@@ -66,9 +66,16 @@ class EspacioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Espacio $espacio)
+    public function update(Request $request, $id)
     {
-        //
+        //return response()->json($request->all());
+        $espacio = Espacio::find($id);
+        $espacio->estado = $request->estado;
+        $espacio->save();
+
+        return redirect()->route('admin.espacios.index')
+        ->with('mensaje', 'Espacio modificado correctamente')
+        ->with('icono','success');
     }
 
     /**
