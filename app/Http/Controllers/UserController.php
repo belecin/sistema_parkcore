@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\RegistroUsuarioMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
@@ -16,7 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $usuarios = User::all();
+        $usuarios = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'SUPER ADMIN');
+        })-> withTrashed()->get();
+        //return response()->json($usuarios);
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
@@ -148,8 +152,33 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $usuario = User::find($id);
+        
+        //verificar que no sea el mismo usuario logueado
+        if($usuario->id === Auth::user()->id){
+            return redirect()->back()
+            ->with('mensaje', 'No puedes eliminar tu propia cuenta')
+            ->with('icono','error');
+        }else{
+            $usuario->estado = false;
+            $usuario->save();
+            $usuario->delete();
+            return redirect()->route('admin.usuarios.index')
+                ->with('mensaje', 'Usuario eliminado correctamente')
+                ->with('icono','success');
+        }
+    }
+    public function restore($id){
+        $usuario = User::withTrashed()->findOrFail($id);
+        $usuario->restore();
+        $usuario->estado = true;
+        $usuario->save();
+        $usuario->restore();
+
+        return redirect()->route('admin.usuarios.index')
+                ->with('mensaje', 'Usuario restaurado correctamente')
+                ->with('icono','success');
     }
 }
