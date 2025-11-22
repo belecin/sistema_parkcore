@@ -13,7 +13,6 @@
                 <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{{ url('/admin/roles') }}">Listado de roles</a></li>
             </ol>
-            </ol>
         </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->

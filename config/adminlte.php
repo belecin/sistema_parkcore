@@ -325,6 +325,12 @@ return [
             'icon' => 'fas fa-fw fa-users',
             'classes' => 'bg-white text-black',
         ],
+        [
+            'text' => 'Espacios',
+            'url' => 'admin/espacios',
+            'icon' => 'fas fa-fw fa-parking',
+            'classes' => 'bg-white text-black',
+        ],
 
         ['header' => 'Ajustes'],
         [

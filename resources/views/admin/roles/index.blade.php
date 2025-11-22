@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table id="table1" class="table table-bordered table-hover table-sm" >
+                        <table id="table1" class="table table-bordered table-hover table-sm" >
                             <thead class="bg-secondary">
                                 <tr>
                                     <th style="width: 10px">Nro</th>
@@ -88,7 +88,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
             <!-- /.card-body -->
             </div>

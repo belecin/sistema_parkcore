@@ -196,7 +196,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group"> 
                                             <label for="logo">Logo Principal</label>
-                                            @if (isset($ajuste) && $ajuste->logo)
+                                            @if (!isset($ajuste) || !$ajuste->logo)
                                             <b> (*)</b>                                              
                                             @endif                                           
                                             <div class="input-group mb-3">
@@ -206,7 +206,7 @@
                                                     </span>
                                                 </div>
                                                 <input type="file" class="form-control" name="logo" id="logo" 
-                                                    accept="image/*" onchange="mostrarImagen(event)" @if(isset($ajuste) && $ajuste->logo) required @endif>                                            
+                                                    accept="image/*" onchange="mostrarImagen(event)" @if(!isset($ajuste) || !$ajuste->logo) required @endif>                                            
                                             </div>
                                             <center>
                                                 @if (isset($ajuste) && $ajuste->logo)
@@ -229,7 +229,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group"> 
                                             <label for="logo_auto">Logo para Auto</label>
-                                            @if (isset($ajuste) && $ajuste->logo_auto)
+                                            @if (!isset($ajuste) || !$ajuste->logo_auto)
                                             <b> (*)</b>                                              
                                             @endif 
                                             <div class="input-group mb-3">
@@ -239,11 +239,12 @@
                                                     </span>
                                                 </div>
                                                 <input type="file" class="form-control" name="logo_auto" id="logo_auto" 
-                                                    accept="image/*" onchange="mostrarImagen2(event)" @if(isset($ajuste) && $ajuste->logo_auto) required @endif>                                           
+                                                    accept="image/*" onchange="mostrarImagen2(event)" 
+                                                    @if(!isset($ajuste) || !$ajuste->logo_auto) required @endif>                                           
                                             </div>
                                             <center>
                                                 @if (isset($ajuste) && $ajuste->logo_auto)
-                                                    <img id="preview2" src="{{asset('storage/logos/' . $ajuste->logo_auto) }}"
+                                                    <img id="preview2" src="{{asset('storage/logos/'.$ajuste->logo_auto) }}"
                                                     style="max-width: 200px; margin-top: 10px;">
                                                 @else   
                                                     <img id="preview2" src=""
