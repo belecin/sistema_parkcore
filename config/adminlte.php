@@ -318,18 +318,28 @@ return [
             'url' => 'admin/roles',
             'icon' => 'fas fa-fw fa-user-shield',
             'classes' => 'bg-white text-black',
+            'active' => ['admin/rol*']
         ],
         [
             'text' => 'Usuarios',
             'url' => 'admin/usuarios',
             'icon' => 'fas fa-fw fa-users',
             'classes' => 'bg-white text-black',
+            'active' => ['admin/usuario*']
         ],
         [
             'text' => 'Espacios',
             'url' => 'admin/espacios',
             'icon' => 'fas fa-fw fa-parking',
             'classes' => 'bg-white text-black',
+            'active' => ['admin/espacio*']
+        ],
+        [
+            'text' => 'Tarifas',
+            'url' => 'admin/tarifas',
+            'icon' => 'fas fa-fw fa-dollar-sign',
+            'classes' => 'bg-white text-black',
+            'active' => ['admin/tarifa*']
         ],
 
         ['header' => 'Ajustes'],
@@ -338,6 +348,7 @@ return [
             'url' => 'admin/ajustes',
             'icon' => 'fas fa-fw fa-cogs',
             'classes' => 'bg-white text-black',
+            'active' => ['admin/ajuste*']
         ],
         
         ],
