@@ -48,10 +48,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php $conta = 1; @endphp
                                 @foreach ($tarifas as $tarifa)
                                     @if ($tarifa->tipo == "hora")
                                         <tr>
-                                            <td style="text-align:center">{{ $loop->iteration }}</td>
+                                            <td style="text-align:center">{{ $conta++ }}</td>
                                             <td>{{ $tarifa->nombre }}</td>
                                             <td style="text-align: center">{{ $tarifa->cantidad }}</td>
                                             <td>{{ $tarifa->tipo }}</td>
