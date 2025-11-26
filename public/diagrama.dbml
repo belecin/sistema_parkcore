@@ -14,7 +14,7 @@ Table ajustes {
     update_at timestamp
 }
 
-table usuarios {
+Table usuarios {
     id int [pk, increment]
     name varchar
     email varchar
@@ -38,7 +38,7 @@ table usuarios {
     update_at timestamp
 }
 
-table espacios
+Table espacios
 {
     id int [pk, increment]
     numero varchar
@@ -48,7 +48,7 @@ table espacios
     update_at timestamp
 }
 
-table tarifas
+Table tarifas
 {
     id int [pk, increment]
     
@@ -57,6 +57,36 @@ table tarifas
     costo decimal
     minutos_de_gracia int
 
+
+    created_at timestamp
+    update_at timestamp
+}
+
+Table clientes
+{
+    id int [pk, increment]
+    
+    nombres string
+    nro_documento string
+    email string
+    celular string
+    genero string
+    estado boolean
+
+    created_at timestamp
+    update_at timestamp
+}
+
+Table vehiculos
+{
+    id int [pk, increment]
+    
+    cliente_id int [ref: > clientes.id]
+    placa string
+    marca string
+    modelo string 
+    color string
+    tipo string
 
     created_at timestamp
     update_at timestamp

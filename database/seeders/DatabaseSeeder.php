@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             'contacto_parentesco' => 'Amigo',
             'estado' => true,
         ])->assignRole('SUPER ADMIN');
+        
         //creamos un seeder 
         Ajuste::create([
             'nombre' => 'Sistema de estacionamiento',
