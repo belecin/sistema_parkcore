@@ -24,7 +24,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-10">
-            <div class="card card-secondary">
+            <div class="card card-info">
                 <div class="card-header">
                 <h3 class="card-title"><b><i class="fas fa-user"></i> Informacion personal</b></h3>              
             </div>
@@ -66,7 +66,7 @@
             <!-- /.card-body -->
             </div>
 
-            <div class="card card-info">
+            <div class="card card-secondary">
                 <div class="card-header">
                 <h3 class="card-title"><b><i class="fas fa-user"></i> Informacion del contacto de Emergencia</b></h3>              
             </div>
@@ -112,10 +112,10 @@
 
                         <br>
                         @if ($usuario->estado == 1)
-                                            <span class="badge badge-success" >Activo</span>                                           
-                                        @else
-                                            <span class="badge badge-danger" >Inactivo</span>
-                                        @endif                      
+                                <span class="badge badge-success" >Activo</span>                               
+                        @else
+                                <span class="badge badge-danger" >Inactivo</span>
+                        @endif                      
                         <hr>
                         <small><b>Fecha y hora de creación:</b> <br> {{ $usuario->created_at }} </small>
                     </div>                                     

@@ -71,8 +71,8 @@
 
                                     <td class="d-flex justify-center">
                                         @if (!($usuario->deleted_at))
-                                            <a href="{{ url('admin/usuario/'.$usuario->id) }}" class="btn btn-secondary btn-sm"><i class="fas fa-eye"></i> Ver</a>
-                                            <a href="{{ url('admin/usuario/'.$usuario->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                            <a href="{{ url('admin/usuario/'.$usuario->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> Ver</a>
+                                            <a href="{{ url('admin/usuario/'.$usuario->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                         <form action="{{ url('admin/usuario/' .$usuario->id) }}" method="post" id="miFormulario{{ $usuario->id }}">
                                         @csrf
                                             @method('DELETE')

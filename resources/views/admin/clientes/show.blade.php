@@ -6,12 +6,12 @@
 <div class="container-fluid">
         <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0">Lista de roles</h1>
+            <h1 class="m-0"><b>Cliente:</b> {{ $cliente->nombres }} </h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Inicio</a></li>
-                    <li class="breadcrumb-item active">Roles</li>
+                <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{ url('/admin/clientes') }}">Listado de clientes</a></li>
             </ol>
         </div><!-- /.col -->
         </div><!-- /.row -->
@@ -23,44 +23,107 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline card-secondary">
+            <div class="card card-info">
                 <div class="card-header">
-                <h3 class="card-title"><b>Roles registrados</b></h3>
-                <!-- /.card-tools -->   
-                <div class="card-tools">
-                    <a href="{{ url('admin/roles/create') }}"class="btn btn-secondary"><i class="fas fa-plus"></i> Crear nuevo</a>
-                </div>          
+                <h3 class="card-title"><b>Datos registrados del cliente</b></h3>              
             </div>
             <!-- /.card-header -->
             <div class="card-body">      
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
+                
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="nombres"><i class="fas fa-user"></i> Nombre Completo</label>
+                                <p>{{ $cliente->nombres}}</p>
+                            </div>    
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="nro_documento"><i class="fas fa-id-card"></i> Numero de Documento</label>
+                                <p>{{ $cliente->nro_documento}}</p>
+                            </div>    
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="email"><i class="fas fa-envelope"></i> Correo Electronico</label>
+                                <p>{{ $cliente->email}}</p>
+                            </div>    
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="celular"><i class="fas fa-mobile-alt"></i> Celular</label>
+                                <p>{{ $cliente->celular}}</p>
+                            </div>    
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="genero"><i class="fas fa-venus-mars"></i> Género</label>
+                                <p>{{ $cliente->genero}}</p>
+                            </div>                           
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="genero"> Estado</label><br>
+                        @if ($cliente->estado == 1)
+                                <span class="badge badge-success" >Activo</span>                               
+                        @else
+                                <span class="badge badge-danger" >Inactivo</span>
+                        @endif 
+                    </div>
+                    </div>
+            </div>
+            </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                <h3 class="card-title"><b>Listado de vehiculos</b></h3>     
+                <div class="card-tools">
+                    <a href="{{ url('admin/clientes/vehiculos') }}"class="btn btn-info btn-sm "><i class="fas fa-plus"></i> Crear nuevo</a>
+                </div>             
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">      
+                <div class="table-responsive">
                         <table id="table1" class="table table-bordered table-hover table-sm" >
-                            <thead class="bg-secondary">
+                            <thead class="bg-light">
                                 <tr>
                                     <th style="width: 10px">Nro</th>
-                                    <th>Nombre de Rol</th>
+                                    <th>Placa</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Color</th>
+                                    <th>Tipo</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $role)
+                                @foreach ($cliente->vehiculos as $vehiculos)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $vehiculo->placa }}</td>
+                                    <td>{{ $vehiculo->marca }}</td>
+                                    <td>{{ $vehiculo->modelo }}</td>
+                                    <td>{{ $vehiculo->color }}</td>
+                                    <td>{{ $vehiculo->tipo }}</td>
                                     <td class="d-flex justify-center">
-                                        <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-check"></i> Asignar permisos</a>
-                                        <a href="{{ url('admin/rol/'.$role->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
-                                        <form action="{{ url('admin/rol/' .$role->id) }}" method="post" id="miFormulario{{ $role->id }}">
+                                        <a href="{{ url('admin/cliente/vehiculo/'.$vehiculo->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                        <form action="{{ url('admin/cliente/vehiculo/' .$vehiculo->id) }}" method="post" id="miFormulario{{ $vehiculo->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="preguntar{{ $role->id }} (event)">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="preguntar{{ $vehiculo->id }} (event)">
                                             <i class="fas fa-trash-alt"></i> Eliminar
                                         </button>
                                         </form>
                                         <script>
-                                            function preguntar{{ $role->id }} (evento) {
+                                            function preguntar{{ $vehiculo->id }} (evento) {
                                                 evento.preventDefault();
 
                                                 Swal.fire({
@@ -74,7 +137,7 @@
                                                     denyButtonText: 'Cancelar',                                                    
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
-                                                        document.getElementById('miFormulario{{ $role->id }}').submit(); //java script para enviar el formulario
+                                                        document.getElementById('miFormulario{{ $vehiculo->id }}').submit(); //java script para enviar el formulario
                                                     } 
                                                 } );
                                             } 
@@ -85,8 +148,7 @@
                             </tbody>    
                         </table>
                         </div>
-                    </div>
-                </div>
+
             </div>
             <!-- /.card-body -->
             </div>
@@ -132,10 +194,10 @@
             "pageLength": 6,
             "language": {
             "emptyTable":"No hay información",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Roles",
-            "infoEmpty": "Mostrando 0 a 0 de 0 Roles",
-            "infoFiltered": "(Filtrado de _MAX_ total Roles)",
-            "lengthMenu": "Mostrar _MENU_ Roles",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Vehiculos",
+            "infoEmpty": "Mostrando 0 a 0 de 0 Vehiculos",
+            "infoFiltered": "(Filtrado de _MAX_ total Vehiculos)",
+            "lengthMenu": "Mostrar _MENU_ Vehiculos",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
             "search": "Buscar:",

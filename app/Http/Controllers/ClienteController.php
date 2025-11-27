@@ -12,7 +12,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente:: withTrashed()->get();
         return view('admin.clientes.index', compact('clientes'));
     }
 
@@ -56,9 +56,10 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cliente $cliente)
+    public function show($id)
     {
-        //
+        $cliente = Cliente::with('vehiculos')->find($id);
+        return view('admin.clientes.show',compact('cliente'));
     }
 
     /**
@@ -111,5 +112,17 @@ class ClienteController extends Controller
             ->with('mensaje', 'Cliente eliminado correctamente')
             ->with('icono','success');
         
+    }
+
+    public function restore($id){
+        $cliente = Cliente::withTrashed()->findOrFail($id);
+        $cliente->restore();
+        $cliente->estado = true;
+        $cliente->save();
+        
+
+        return redirect()->route('admin.clientes.index')
+                ->with('mensaje', 'Cliente restaurado correctamente')
+                ->with('icono','success');
     }
 }

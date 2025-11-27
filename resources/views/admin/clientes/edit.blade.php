@@ -23,7 +23,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-info">
+            <div class="card card-success">
                 <div class="card-header">
                 <h3 class="card-title"><b>Llene el formulario</b></h3>              
             </div>
@@ -122,7 +122,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <a href="{{ url('/admin/clientes') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Regresar</a>
-                            <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Actualizar</button>
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Actualizar</button>
                         </div>
                     </div>
                 </form>

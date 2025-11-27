@@ -66,9 +66,15 @@
                                             <span class="badge badge-danger" >Inactivo</span>
                                         @endif                                                                                
                                     </td>
+
                                     <td class="d-flex justify-center">
-                                        <a href="{{ url('admin/cliente/'.$cliente->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
-                                        <form action="{{ url('admin/cliente/' .$cliente->id) }}" method="post" id="miFormulario{{ $cliente->id }}">
+                                    @if (!$cliente->deleted_at)
+                                        <a href="{{ url('admin/cliente/'. $cliente->id ) }}" 
+                                            class="btn btn-info btn-sm"><i class="fas fa-car"></i> Ver</a>
+                                        <a href="{{ url('admin/cliente/'. $cliente->id.'/edit') }}" 
+                                            class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                        <form action="{{ url('admin/cliente/' .$cliente->id) }}" 
+                                            method="post" id="miFormulario{{ $cliente->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="preguntar{{ $cliente->id }} (event)">
@@ -93,7 +99,41 @@
                                                     } 
                                                 } );
                                             } 
+                                        </script>                                        
+                                    @else                                      
+                                            <form 
+                                            action="{{ url('admin/cliente/' .$cliente->id.'/restaurar') }}" 
+                                            method="post" id="miFormulario{{ $cliente->id }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-warning btn-sm" 
+                                            onclick="preguntar{{ $cliente->id }} (event)">
+                                                <i class="fas fa-save"></i> Restaurar cliente
+                                            </button>
+                                            </form>
+                                            <script>
+                                            function preguntar{{ $cliente->id }} (evento) {
+                                                evento.preventDefault();
+
+                                                Swal.fire({
+                                                    title: '¿Desea restaurar este cliente?',
+                                                    text: '',
+                                                    icon: 'question',
+                                                    showDenyButton: true,
+                                                    confirmButtonText: 'Sí, restaurar',
+                                                    confirmButtonColor: '#dc3545',
+                                                    denyButtonColor: '#6e7176',
+                                                    denyButtonText: 'Cancelar',                                                    
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        document.getElementById('miFormulario{{ $cliente->id }}').submit(); //java script para enviar el formulario
+                                                    } 
+                                                } );
+                                            } 
+
                                         </script>
+                                        @endif
+
+                                        
                                     </td>
                                 </tr>
                                 @endforeach

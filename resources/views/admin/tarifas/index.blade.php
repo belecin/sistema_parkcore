@@ -59,7 +59,7 @@
                                             <td>{{ $ajuste->divisa." ".$tarifa->costo }}</td>
                                             <td style="text-align: center">{{ $tarifa->minutos_de_gracia }} min</td>
                                             <td class="d-flex justify-content-center">
-                                                <a href="{{ url('admin/tarifa/'.$tarifa->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                                <a href="{{ url('admin/tarifa/'.$tarifa->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                                 <form action="{{ url('admin/tarifa/' .$tarifa->id) }}" method="post" id="miFormulario{{ $tarifa->id }}">
                                                     @csrf
                                                     @method('DELETE')
@@ -132,7 +132,7 @@
                                             <td>{{ $ajuste->divisa." ".$tarifa->costo }}</td>
                                             <td style="text-align: center">{{ $tarifa->minutos_de_gracia }} min</td>
                                             <td class="d-flex justify-content-center">
-                                                <a href="{{ url('admin/tarifa/'.$tarifa->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                                <a href="{{ url('admin/tarifa/'.$tarifa->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                                 <form action="{{ url('admin/tarifa/' .$tarifa->id) }}" method="post" id="miFormulario{{ $tarifa->id }}">
                                                     @csrf
                                                     @method('DELETE')
@@ -207,7 +207,7 @@
                                             <td>{{ $ajuste->divisa." ".$tarifa->costo }}</td>
                                             <td style="text-align: center">{{ $tarifa->minutos_de_gracia }} min</td>
                                             <td class="d-flex justify-content-center">
-                                                <a href="{{ url('admin/tarifa/'.$tarifa->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                                                <a href="{{ url('admin/tarifa/'.$tarifa->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                                 <form action="{{ url('admin/tarifa/' .$tarifa->id) }}" method="post" id="miFormulario{{ $tarifa->id }}">
                                                     @csrf
                                                     @method('DELETE')
