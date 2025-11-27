@@ -59,7 +59,13 @@
                                     <td>{{ $cliente->email }}</td>
                                     <td>{{ $cliente->celular }}</td>
                                     <td>{{ $cliente->genero }}</td>
-                                    <td>{{ $cliente->estado }}</td>
+                                    <td style="text-align: center">
+                                        @if ($cliente->estado == 1)
+                                            <span class="badge badge-success" >Activo</span>                                           
+                                        @else
+                                            <span class="badge badge-danger" >Inactivo</span>
+                                        @endif                                                                                
+                                    </td>
                                     <td class="d-flex justify-center">
                                         <a href="{{ url('admin/cliente/'.$cliente->id.'/edit') }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                         <form action="{{ url('admin/cliente/' .$cliente->id) }}" method="post" id="miFormulario{{ $cliente->id }}">
