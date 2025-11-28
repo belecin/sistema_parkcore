@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('marca');
             $table->string('modelo');
             $table->string('color');
-            $table->enum('tipo',['auto','camioneta','motocicleta','camion','']);
+            $table->enum('tipo',['auto','camioneta','mototaxi','camion','']);
             
             $table->timestamps();
         });
