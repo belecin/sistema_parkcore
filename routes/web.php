@@ -63,3 +63,6 @@ Route::delete('admin/cliente/{id}', [App\Http\Controllers\ClienteController::cla
 Route::post('admin/clientes/vehiculos/create', [App\Http\Controllers\VehiculoController::class, 'store'])->name('admin.clientes.vehiculos.store')->middleware('auth');
 Route::put('admin/clientes/vehiculo/{id}', [App\Http\Controllers\VehiculoController::class, 'update'])->name('admin.clientes.vehiculos.update')->middleware('auth');
 Route::delete('admin/clientes/vehiculo/{id}', [App\Http\Controllers\VehiculoController::class, 'destroy'])->name('admin.clientes.vehiculos.destroy')->middleware('auth');
+
+//rutas para tickets
+Route::get('admin/tickets', [App\Http\Controllers\TicketController::class, 'index'])->name('admin.tickets.index')->middleware('auth');

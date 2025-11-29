@@ -348,6 +348,13 @@ return [
             'classes' => 'bg-white text-black',
             'active' => ['admin/cliente*']
         ],
+        [
+            'text' => 'Tickets',
+            'url' => 'admin/Tickets',
+            'icon' => 'fas fa-fw fa-ticket-alt',
+            'classes' => 'bg-white text-black',
+            'active' => ['admin/ticket*']
+        ],
 
         ['header' => 'Ajustes'],
         [

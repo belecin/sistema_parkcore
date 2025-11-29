@@ -20,4 +20,8 @@ class Vehiculo extends Model
     public function cliente(){
         return $this->belongsTo(Cliente::class); //de 1 a 1
     }
+
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
+    }
 }

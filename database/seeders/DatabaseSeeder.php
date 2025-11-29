@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Espacio;
 use App\Models\Tarifa;
 use App\Models\User;
+use App\Models\Vehiculo;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -169,54 +170,100 @@ class DatabaseSeeder extends Seeder
         Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'5', 'costo'=>'210', 'minutos_de_gracia'=>'60']);
         Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'6', 'costo'=>'290', 'minutos_de_gracia'=>'60']);
 
-        // Cliente 1
-        Cliente::create([
-            'nombres' => 'Luis Fernando Martínez Quispe',
-            'nro_documento' => '56781234',
-            'email' => 'luis.martinez@gmail.com',
-            'celular' => '77654321',
-            'genero' => 'Masculino',
-            'estado' => true,
-        ]);
 
-        // Cliente 2
-        Cliente::create([
-            'nombres' => 'Gabriela Sofía Rojas Mercado',
-            'nro_documento' => '44556677',
-            'email' => 'gabriela.rojas@outlook.com',
-            'celular' => '78123456',
+        // Cliente 1 y su vehículo
+        $cliente1 = Cliente::create([
+            'nombres' => 'Lucía Fernanda Quiroz Ramos',
+            'nro_documento' => '45879231',
+            'email' => 'lucia.quiroz@gmail.com',
+            'celular' => '987654321',
             'genero' => 'Femenino',
             'estado' => true,
         ]);
 
-        // Cliente 3
-        Cliente::create([
-            'nombres' => 'Jorge Alberto Limachi Cruz',
-            'nro_documento' => '99887766',
-            'email' => 'jorge.limachi@gmail.com',
-            'celular' => '79234567',
-            'genero' => 'Masculino',
-            'estado' => true,
+        Vehiculo::create([
+            'cliente_id' => $cliente1->id,
+            'placa' => 'PQT-548',
+            'marca' => 'Hyundai',
+            'modelo' => 'Elantra',
+            'color' => 'Gris',
+            'tipo' => 'auto',
         ]);
-        // Cliente 4
-        Cliente::create([
-            'nombres' => 'Diego Andrés Vargas Paredes',
-            'nro_documento' => '67890123',
-            'email' => 'diego.vargas@outlook.com',
-            'celular' => '75123489',
+
+        // Cliente 2 y su vehículo
+        $cliente2 = Cliente::create([
+            'nombres' => 'Javier Manuel Escalante Torres',
+            'nro_documento' => '76543298',
+            'email' => 'javier.escalante@hotmail.com',
+            'celular' => '945632178',
             'genero' => 'Masculino',
             'estado' => true,
         ]);
 
-        // Cliente 5
-        Cliente::create([
-            'nombres' => 'Valeria Isabel Mendoza Rojas',
-            'nro_documento' => '88776655',
-            'email' => 'valeria.mendoza@gmail.com',
-            'celular' => '76234590',
+        Vehiculo::create([
+            'cliente_id' => $cliente2->id,
+            'placa' => 'TRX-912',
+            'marca' => 'Mazda',
+            'modelo' => '3 Touring',
+            'color' => 'Rojo',
+            'tipo' => 'camioneta',
+        ]);
+
+        // Cliente 3 y su vehículo
+        $cliente3 = Cliente::create([
+            'nombres' => 'Valeria Sofía Paredes Huamán',
+            'nro_documento' => '50987654',
+            'email' => 'valeria.paredes@yahoo.com',
+            'celular' => '912345678',
             'genero' => 'Femenino',
             'estado' => true,
         ]);
 
+        Vehiculo::create([
+            'cliente_id' => $cliente3->id,
+            'placa' => 'KLM-734',
+            'marca' => 'Kia',
+            'modelo' => 'Rio',
+            'color' => 'Negro',
+            'tipo' => 'auto',
+        ]);
+
+        // Cliente 4 y su vehículo
+        $cliente4 = Cliente::create([
+            'nombres' => 'Rodrigo Andrés Villalobos Cárdenas',
+            'nro_documento' => '63458921',
+            'email' => 'rodrigo.villalobos@gmail.com',
+            'celular' => '956478321',
+            'genero' => 'Masculino',
+            'estado' => true,
+        ]);
+
+        Vehiculo::create([
+            'cliente_id' => $cliente4->id,
+            'placa' => 'BHF-217',
+            'marca' => 'Chevrolet',
+            'modelo' => 'Onix',
+            'color' => 'Plata',
+            'tipo' => 'auto',
+        ]);
+
+        // Cliente 5 y su vehículo
+        $cliente5 = Cliente::create([
+            'nombres' => 'Gabriela Milagros Cuadros Sifuentes',
+            'nro_documento' => '78451239',
+            'email' => 'gabriela.cuadros@hotmail.com',
+            'celular' => '987213564',
+            'genero' => 'Femenino',
+            'estado' => true,
+        ]);
+
+        Vehiculo::create([
+            'cliente_id' => $cliente5->id,
+            'placa' => 'QKS-903',
+            'marca' => 'Volkswagen',
+            'modelo' => 'Golf',
+            'color' => 'Blanco',
+            'tipo' => 'auto',
+        ]);
     }
 }
