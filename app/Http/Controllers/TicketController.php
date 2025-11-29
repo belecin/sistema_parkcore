@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ajuste;
+use App\Models\Espacio;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,9 @@ class TicketController extends Controller
      */
     public function index()
     {
-        return view('admin.tickets.index');
+        $ajuste = Ajuste::first();
+        $espacios = Espacio::all();
+        return view('admin.tickets.index', compact('espacios','ajuste'));
     }
 
     /**

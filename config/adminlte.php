@@ -350,7 +350,7 @@ return [
         ],
         [
             'text' => 'Tickets',
-            'url' => 'admin/Tickets',
+            'url' => 'admin/tickets',
             'icon' => 'fas fa-fw fa-ticket-alt',
             'classes' => 'bg-white text-black',
             'active' => ['admin/ticket*']

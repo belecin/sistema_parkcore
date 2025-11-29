@@ -91,8 +91,8 @@
                                 </form>
                                 </div>
                             </div>                            
+                    
                         </div>
-
                             <h5>{{ $espacio->estado }}</h5>
                         </div>
                     @endforeach
@@ -112,5 +112,4 @@
 
 @section('js')
     
-</script>
 @stop
