@@ -55,8 +55,7 @@
 
                             <br><br>
                         </div>
-                    @endforeach
-                    
+                    @endforeach                   
                 </div>
             </div>
             <!-- /.card-body -->
@@ -67,18 +66,42 @@
 
     <!-- Modal para el ticket -->
     <div class="modal fade" id="modal_ticket" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: rgb(33, 56, 75);color:white">
+                <div class="modal-header" style="background-color: rgb(34, 64, 147);color:white">
                     <h5 class="modal-title" id="exampleModalLabel">Generar ticket </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                    
-                </div>
-            </div>    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="placa">Placa del vehiculo</label><b> (*)</b>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                        </div>
+                                        <select name="" id="" class="form-control select2">
+                                            <option value="">Buscar vehiculo</option>
+                                            @foreach ($vehiculos as $vehiculo)
+                                                <option value="{{ $vehiculo->id }}">Placa: {{ $vehiculo->placa }} - Cliente: {{ $vehiculo->cliente->nombres }}</option>
+                                            @endforeach                                       
+                                        </select>
+                                    </div>
+                                        @error('placa')
+                                            <small style="color: red">{{ $message }}</small>                           
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="info_vehiculo">
+
+                            </div>
+                    </div>
+            </div>
         </div>
     </div>
 
@@ -117,22 +140,52 @@
 @stop
 
 @section('css')
-    
+<style>
+    .select2-container .select2-selection--single {
+        height: 35px !important;
+    }
+</style>
 @stop
 
 @section('js')
-<script>
-    $('.btn-ticket').on('click',function(){
-        var espacio_id = $(this).data('espacio-id');
-        $('#modal_ticket').modal('show');
-    });
+    <script>
+        $(document).ready(function(){
+            $('.select2').select2({
+                allowClear: true,
+                width:'90%',
+                dropdownParent: $('#modal_ticket')
+            });
+            $('.select2').on('change',function(){
+                var vehiculo_id = $(this).val();
 
-    $('.btn-mantenimiento').on('click',function(){
-        $('#modal_mantenimiento').modal('show');
-    });
+                if(vehiculo_id){                  
+                    $.ajax({                  //tecnologia que nos permite hacer consulta a la base de datos
+                        url : "{{ url('admin/tickets/vehiculo') }}/" + vehiculo_id,
+                        type : 'GET',
+                        success: function(data){
+                            $('#info_vehiculo').html(data);
+                        },
+                        error:function(){
+                            $('#info_vehiculo').html('<p>Error al cargar la informacion</p>');
+                        }
+                    });
+                }else{
+                    alert("Debe seleccionar un vehiculo");
+                }
+            });
+        });
 
-    $('.btn-ocupado').on('click',function(){
-        $('#modal_ocupado').modal('show');
-    });
-</script>
+        $('.btn-ticket').on('click',function(){
+            var espacio_id = $(this).data('espacio-id');
+            $('#modal_ticket').modal('show');
+        });
+
+        $('.btn-mantenimiento').on('click',function(){
+            $('#modal_mantenimiento').modal('show');
+        });
+
+        $('.btn-ocupado').on('click',function(){
+            $('#modal_ocupado').modal('show');
+        });
+    </script>
 @stop
