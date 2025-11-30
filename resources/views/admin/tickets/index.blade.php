@@ -34,7 +34,7 @@
                         <h5>ESP-{{ $espacio->numero }}</h2> 
                             
                         @if ($espacio->estado == "libre") 
-                            <button class="btn btn-white border border-dark  btn-ticket" data-espacio-id="{{ $espacio->id }}"
+                            <button class="btn btn-white border border-dark  btn-ticket" data-espacio-id="{{ $espacio->id }} " data-numero-espacio="{{ $espacio->numero }}"
                                 style="width: 100%;height:120px">
                                 LIBRE
                             </button>                       
@@ -69,38 +69,77 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: rgb(34, 64, 147);color:white">
-                    <h5 class="modal-title" id="exampleModalLabel">Generar ticket </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="placa">Placa del vehiculo</label><b> (*)</b>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
-                                        </div>
-                                        <select name="" id="" class="form-control select2">
-                                            <option value="">Buscar vehiculo</option>
-                                            @foreach ($vehiculos as $vehiculo)
-                                                <option value="{{ $vehiculo->id }}">Placa: {{ $vehiculo->placa }} - Cliente: {{ $vehiculo->cliente->nombres }}</option>
-                                            @endforeach                                       
-                                        </select>
+                    <h5 class="modal-title" id="exampleModalLabel">Generar ticket del espacio <span id="espacio"></span> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidder" id="espacio_id">
+                        
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label for="placa">Placa del vehiculo</label><b> (*)</b>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-car"></i></span>
                                     </div>
-                                        @error('placa')
-                                            <small style="color: red">{{ $message }}</small>                           
-                                        @enderror
-                                    </div>
+                                    <select name="" id="vehiculo_id" class="form-control select2">
+                                        <option value="">Buscar vehiculo</option>
+                                        @foreach ($vehiculos as $vehiculo)
+                                        <option value="{{ $vehiculo->id }}">Placa: {{ $vehiculo->placa }} - Cliente: {{ $vehiculo->cliente->nombres }}</option>
+                                        @endforeach                                       
+                                    </select>
                                 </div>
+                                @error('placa')
+                                    <small style="color: red">{{ $message }}</small>                           
+                                @enderror
                             </div>
-
-                            <div id="info_vehiculo">
-
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div style="height: 31px"></div>
+                                <a href="{{ url('/admin/clientes/create') }}" class="btn btn-secondary">Nuevo cliente</a>
                             </div>
+                        </div>
                     </div>
+
+                    <div id="info_vehiculo">
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="tarifas">Tarifas</label><b> (*)</b>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                    </div>
+                                    <select name="" id="tarifa_id" class="form-control select2">
+                                        @foreach ($tarifas as $tarifa)
+                                        <option value="{{ $tarifa->id }}">Tarifa: {{ $tarifa->nombre }} - Tipo: {{ $tarifa->tipo }} - 
+                                            Cantidad: {{ $tarifa->cantidad }} - Costo: {{ $ajuste->divisa."".$tarifa->costo }}</option>
+                                        @endforeach                                       
+                                    </select>
+                                </div>
+                                @error('tarifas')
+                                    <small style="color: red">{{ $message }}</small>                           
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="obs">Observacion</label><b>
+                            <textarea name="" class="form-control" id="obs" cols="30" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <button class="btn btn-primary" id="btn_registrar">Registrar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -155,11 +194,11 @@
                 width:'90%',
                 dropdownParent: $('#modal_ticket')
             });
-            $('.select2').on('change',function(){
+            $('#vehiculo_id').on('change',function(){
                 var vehiculo_id = $(this).val();
 
                 if(vehiculo_id){                  
-                    $.ajax({                  //tecnologia que nos permite hacer consulta a la base de datos
+                    $.ajax({     //tecnologia que nos permite hacer consulta a la base de datos
                         url : "{{ url('admin/tickets/vehiculo') }}/" + vehiculo_id,
                         type : 'GET',
                         success: function(data){
@@ -175,8 +214,18 @@
             });
         });
 
+        $('#btn_registrar').on('click',function(){
+            var espacio_id = $('#espacio_id').val();
+            var vehiculo_id = $('#vehiculo_id').val();
+            var tarifa_id = $('#tarifa_id').val();
+            alert(espacio_id+" - "+vehiculo_id+" - "+tarifa_id);
+        });
+
         $('.btn-ticket').on('click',function(){
             var espacio_id = $(this).data('espacio-id');
+            var numero_espacio= $(this).data('numero-espacio');
+            $('#espacio_id').val(espacio_id);
+            $('#espacio').html(numero_espacio);
             $('#modal_ticket').modal('show');
         });
 

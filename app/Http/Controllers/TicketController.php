@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ajuste;
 use App\Models\Espacio;
+use App\Models\Tarifa;
 use App\Models\Ticket;
 use App\Models\Vehiculo;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class TicketController extends Controller
         $ajuste = Ajuste::first();
         $espacios = Espacio::all();
         $vehiculos = Vehiculo::with('cliente')->get();
+        $tarifas = Tarifa::all();
         //return response()->json($vehiculos);
-        return view('admin.tickets.index', compact('espacios','ajuste','vehiculos'));
+        return view('admin.tickets.index', compact('espacios','ajuste','vehiculos','tarifas'));
     }
 
     public function buscar_vehiculo($id){
