@@ -30,18 +30,30 @@
             <div class="card-body">      
                 <div class="row">
                     @foreach ($espacios as $espacio)
-                        <div class="col-1" style="text-align: center">
-                        <h5>ESP - {{ $espacio->numero }}</h2> 
+                        <div class="col" style="text-align: center">
+                        <h5>ESP-{{ $espacio->numero }}</h2> 
                             
                         @if ($espacio->estado == "libre") 
-                            <button class="btn btn-white border border-dark  btn-ticket">
-                                <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" 
-                                style="max-width: 80px; margin-top: 10px;">
+                            <button class="btn btn-white border border-dark  btn-ticket" data-espacio-id="{{ $espacio->id }}"
+                                style="width: 100%;height:120px">
+                                LIBRE
                             </button>                       
                         @endif
                         
-                            <h5>{{ $espacio->estado }}</h5>
-                            <br>
+                        @if ($espacio->estado == "mantenimiento") 
+                            <button class="btn btn-warning border border-dark  btn-mantenimiento"
+                                style="width: 100%;height:120px">
+                                <small>MANTENIMIENTO</small>
+                            </button>                       
+                        @endif
+
+                        @if ($espacio->estado == "ocupado") 
+                            <button class="btn btn-danger border border-dark  btn-ocupado" style="width: 100%;height:120px">
+                                <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 60px; margin-top: 5px;">
+                            </button>                       
+                        @endif
+
+                            <br><br>
                         </div>
                     @endforeach
                     
@@ -53,47 +65,51 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modal_cambiar_estado{{ $espacio->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Modal para el ticket -->
+    <div class="modal fade" id="modal_ticket" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: rgb(27, 152, 108);color:white">
-                    <h5 class="modal-title" id="exampleModalLabel">Cambiar el estado del espacio {{ $espacio->numero }} </h5>
+                <div class="modal-header" style="background-color: rgb(33, 56, 75);color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Generar ticket </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                    <form action="{{ url('/admin/espacio/' .$espacio->id) }}" method="post">
-                        @csrf 
-                        @method('PUT')
-                            <div class="row">
-                                <label for="estado">Estado</label><b> (*)</b>
-                                    <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
-                                    </div>
-                                    <select class="form-control" name="estado" id="estado" 
-                                    required>
-                                        <option value="">Seleccione un espacio ...</option>
-                                        <option value="libre" value={{ old('estado') == 'libre' ? 'selected' : '' }} >libre</option>
-                                        <option value="ocupado" value={{ old('estado') == 'ocupado' ? 'selected' : '' }} >Ocupado</option>
-                                        <option value="mantenimiento" value={{ old('estado') == 'mantenimiento' ? 'selected' : '' }} >Mantenimiento
-                                        </option>
-                                    </select>
-                                </div>
-                                @error('estado')
-                                    <small style="color: red">{{ $message }}</small>   
-                                @enderror
-                                </div>
-                            </div>
-                                <div class="row">
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="btn bg-success ">Guardar</button>
-                                    </div>
-                        </div>
-                    </form>
+                    
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <!-- Modal en mantenimiento -->
+    <div class="modal fade" id="modal_mantenimiento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: rgb(169, 117, 14);color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Estado del Estacionamiento </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <p style="text-align: center">El estado de este espacio esta en mantenimiento</p>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <!-- Modal en ocupado -->
+    <div class="modal fade" id="modal_ocupado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: rgb(134, 13, 13);color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Finalizar ticket </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
                 </div>
             </div>    
         </div>
@@ -107,7 +123,16 @@
 @section('js')
 <script>
     $('.btn-ticket').on('click',function(){
-        alert("hola");
+        var espacio_id = $(this).data('espacio-id');
+        $('#modal_ticket').modal('show');
+    });
+
+    $('.btn-mantenimiento').on('click',function(){
+        $('#modal_mantenimiento').modal('show');
+    });
+
+    $('.btn-ocupado').on('click',function(){
+        $('#modal_ocupado').modal('show');
     });
 </script>
 @stop
