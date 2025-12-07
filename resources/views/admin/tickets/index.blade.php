@@ -75,7 +75,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidder" id="espacio_id">
+                    <form action=" {{ url('/admin/tickets/create') }} " method="POST" id="form_ticket">
+                    @csrf 
+
+                    <input type="hidden" id="espacio_id" name="espacio_id">
                         
                     <div class="row">
                         <div class="col-md-10">
@@ -85,7 +88,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-car"></i></span>
                                     </div>
-                                    <select name="" id="vehiculo_id" class="form-control select2">
+                                    <select name="vehiculo_id" id="vehiculo_id" class="form-control select2">
                                         <option value="">Buscar vehiculo</option>
                                         @foreach ($vehiculos as $vehiculo)
                                         <option value="{{ $vehiculo->id }}">Placa: {{ $vehiculo->placa }} - Cliente: {{ $vehiculo->cliente->nombres }}</option>
@@ -116,7 +119,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-car"></i></span>
                                     </div>
-                                    <select name="" id="tarifa_id" class="form-control select2">
+                                    <select name="tarifa_id" id="tarifa_id" class="form-control select2">
                                         @foreach ($tarifas as $tarifa)
                                         <option value="{{ $tarifa->id }}">Tarifa: {{ $tarifa->nombre }} - Tipo: {{ $tarifa->tipo }} - 
                                             Cantidad: {{ $tarifa->cantidad }} - Costo: {{ $ajuste->divisa."".$tarifa->costo }}</option>
@@ -132,13 +135,15 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="obs">Observacion</label><b>
-                            <textarea name="" class="form-control" id="obs" cols="30" rows="2"></textarea>
+                            <textarea name="obs" class="form-control" id="obs" cols="30" rows="2"></textarea>
                         </div>
                     </div>
+
                     <hr>
                     <div class="row">
-                        <button class="btn btn-primary" id="btn_registrar">Registrar</button>
+                        <button class="btn btn-primary" type="submit">Registrar</button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -214,11 +219,15 @@
             });
         });
 
-        $('#btn_registrar').on('click',function(){
+        $('#form_ticket').on('submit',function(event){
             var espacio_id = $('#espacio_id').val();
             var vehiculo_id = $('#vehiculo_id').val();
             var tarifa_id = $('#tarifa_id').val();
-            alert(espacio_id+" - "+vehiculo_id+" - "+tarifa_id);
+            //alert(espacio_id+" - "+vehiculo_id+" - "+tarifa_id);
+            if(!espacio_id || !vehiculo_id || !tarifa_id){
+                event.preventDefault();
+                alert("Por favor, complete todos los campos")
+            }
         });
 
         $('.btn-ticket').on('click',function(){
