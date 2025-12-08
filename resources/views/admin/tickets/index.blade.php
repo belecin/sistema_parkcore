@@ -6,7 +6,7 @@
 <div class="container-fluid">
         <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0">Seguimineto del Estacionamiento</h1>
+            <h1 class="m-0">Seguimiento del Estacionamiento</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -30,29 +30,39 @@
             <div class="card-body">      
                 <div class="row">
                     @foreach ($espacios as $espacio)
-                        <div class="col" style="text-align: center">
-                        <h5>ESP-{{ $espacio->numero }}</h2> 
-                            
-                        @if ($espacio->estado == "libre") 
-                            <button class="btn btn-white border border-dark  btn-ticket" data-espacio-id="{{ $espacio->id }} " data-numero-espacio="{{ $espacio->numero }}"
-                                style="width: 100%;height:120px">
-                                LIBRE
-                            </button>                       
-                        @endif
-                        
-                        @if ($espacio->estado == "mantenimiento") 
-                            <button class="btn btn-warning border border-dark  btn-mantenimiento"
-                                style="width: 100%;height:120px">
-                                <small>MANTENIMIENTO</small>
-                            </button>                       
-                        @endif
-
-                        @if ($espacio->estado == "ocupado") 
-                            <button class="btn btn-danger border border-dark  btn-ocupado" style="width: 100%;height:120px">
-                                <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 60px; margin-top: 5px;">
-                            </button>                       
-                        @endif
-
+                    @php
+                        $ticket_activo = $tickets_activos->firstWhere('espacio_id',$espacio->id)
+                    @endphp
+                        <div class="col-md-1 col-4" style="text-align: center">
+                            <h5>ESP-{{ $espacio->numero }}</h2> 
+                                @if ($ticket_activo)
+                                    <button class="btn btn-danger border border-dark  btn-ocupado" data-ticket-id="{{ $ticket_activo->id }}" style="width: 100%;height:200px">
+                                        <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 60px; margin-top: 5px;"><br>
+                                        <small>{{ $ticket_activo->vehiculo->placa }}</small><br>
+                                        <small>{{ $ticket_activo->fecha_ingreso }}</small><br>
+                                        <small>{{ $ticket_activo->hora_ingreso }}</small>
+                                    </button> 
+                                @else
+                                    @if ($espacio->estado == "libre") 
+                                    <button class="btn btn-white border border-dark  btn-ticket" data-espacio-id="{{ $espacio->id }} " data-numero-espacio="{{ $espacio->numero }}"
+                                        style="width: 100%;height:200px">
+                                        LIBRE
+                                    </button>                       
+                                    @endif
+                                
+                                    @if ($espacio->estado == "mantenimiento") 
+                                            <button class="btn btn-warning border border-dark  btn-mantenimiento"
+                                                style="width: 100%;height:200px">
+                                                <small>Mantenimiento</small>
+                                            </button>                       
+                                    @endif
+                                    @if ($espacio->estado == "ocupado") 
+                                    <button class="btn btn-danger border border-dark " 
+                                    style="width: 100%;height:200px">
+                                        OCUPADO
+                                    </button>                       
+                                    @endif
+                                @endif
                             <br><br>
                         </div>
                     @endforeach                   
@@ -177,6 +187,13 @@
                         </button>
                     </div>
                     <div class="modal-body">
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#" id="btn_imprimir_ticket" class="btn btn-warning"><i class="fas fa-print"></i>Imprimir</a>
+                            </div>
+                        </div>
                 </div>
             </div>    
         </div>
@@ -243,6 +260,9 @@
         });
 
         $('.btn-ocupado').on('click',function(){
+            var ticket_id = $(this).data('ticket-id');
+            var urlImprimir = "{{ url('/admin/ticket/') }}"+ "/" +ticket_id +"/imprimir";
+            $('#btn_imprimir_ticket').attr('href',urlImprimir);
             $('#modal_ocupado').modal('show');
         });
     </script>

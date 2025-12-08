@@ -8,9 +8,11 @@ use App\Models\Espacio;
 use App\Models\Tarifa;
 use App\Models\Ticket;
 use App\Models\Vehiculo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TicketController extends Controller
 {
@@ -23,8 +25,11 @@ class TicketController extends Controller
         $espacios = Espacio::all();
         $vehiculos = Vehiculo::with('cliente')->get();
         $tarifas = Tarifa::all();
-        //return response()->json($vehiculos);
-        return view('admin.tickets.index', compact('espacios','ajuste','vehiculos','tarifas'));
+
+        $tickets_activos = Ticket::where('estado_ticket','activo')->get();
+
+        //return response()->json($tickets_activos);
+        return view('admin.tickets.index', compact('espacios','ajuste','vehiculos','tarifas','tickets_activos'));
     }
 
     public function buscar_vehiculo($id){
@@ -52,6 +57,17 @@ class TicketController extends Controller
             'tarifa_id' => 'required',
         ]);
 
+        $ticket_activo = Ticket::where('vehiculo_id',$request->vehiculo_id)
+                                ->where('estado_ticket','activo')->first();
+        if ($ticket_activo) {
+            return redirect()->back()
+            ->with('mensaje', 'Error: El vehiculo ya tiene un ticket activo')
+            ->with('icono','error');
+        } else {
+            # code...
+        }
+        
+
         $vehiculo = Vehiculo::find($request->vehiculo_id);
         Auth::user()->id;
         $ticket = new Ticket();
@@ -65,16 +81,42 @@ class TicketController extends Controller
         $ultimo_ticket = DB::table('tickets')->max('id');
         $siguiente_ticket = $ultimo_ticket ? $ultimo_ticket + 1: 1;
         $codigo_ticket ='TK- '.$siguiente_ticket;
-    
 
-        $ticket->tarifa_id = $request->tarifa_id;
+        //asignar fecha y hora 
+        $fecha_hora = Carbon::now();
 
+        $ticket->codigo_ticket = $codigo_ticket;
+        $ticket->fecha_ingreso = $fecha_hora->toDateString();
+        $ticket->hora_ingreso = $fecha_hora->toTimeString();
+        $ticket->estado_ticket = 'activo';
+        $ticket->obs = $request->obs;
 
         $ticket->save();
 
-        return redirect()->route('admin.ticketes.index')
-        ->with('mensaje', 'ticket registrado correctamente')
+        return redirect()->route('admin.tickets.index')
+        ->with('mensaje', 'Ticket registrado correctamente')
         ->with('icono','success');
+    }
+
+
+    public function imprimir_ticket($id){
+        $ticket = Ticket::with('cliente')->find($id);
+        $ajuste = Ajuste::first();
+
+        $fecha_hora = Carbon::now();
+
+        $pdf = PDF::loadView('admin.tickets.ticket_pdf',compact('ticket','ajuste','fecha_hora'));
+        // Configuración para impresora térmica (80mm de ancho, alto automático)
+        $pdf->setOptions([
+            'dpi' => 120,
+            'defaultPaperSize' => [0, 0, 226.77, 0], // 80mm = 226.77 puntos
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'defaultFont' => 'Arial Narrow'
+        ]);
+
+        $pdf->setPaper([0, 0, 226.77, 999999]); // 80mm de ancho, alto infinito
+        return $pdf->stream("ticket.pdf");
     }
 
     /**
