@@ -237,7 +237,7 @@
                                 <a href="#" id="btn_imprimir_ticket" data-dismiss="modal" data-toggle="modal" 
                                 data-target="#modal_pdf_ticket" class="btn btn-warning"><i class="fas fa-print"></i> Imprimir</a>
 
-                                <a href="#" id="btn_facturar" data-toggle="modal" 
+                                <a href="#" id="btn_facturar" 
                                 class="btn btn-success"><i class="fas fa-money-bill"></i> Facturar</a>
                             </div>
                         </div>
@@ -343,6 +343,9 @@
             $('#hora_ingreso').html(hora_ingreso);
             
             ticket_a_imprimir = $(this).data('ticket-id');
+
+            var url_finalizar_ticket = "{{ url('/admin/ticket/') }}"+ "/" + ticket_a_imprimir +"/finalizar_ticket";
+            $('#btn_facturar').attr('href',url_finalizar_ticket);
 
             //$('#btn_imprimir_ticket').attr('href',urlImprimir);
             $('#modal_ocupado').modal('show');

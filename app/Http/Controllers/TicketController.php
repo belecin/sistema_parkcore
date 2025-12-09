@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
 
 class TicketController extends Controller
 {
@@ -120,6 +121,150 @@ class TicketController extends Controller
         //$pdf->setPaper([0, 0, 226.77, 999999]); // 80mm de ancho, alto infinito
         $pdf->setPaper([0, 0, 283.46, 800]); // 80mm de ancho, alto infinito
         return $pdf->stream("ticket.pdf");
+    }
+
+    public function finalizar_ticket($id){
+        $ticket = Ticket::find($id);
+
+        $fecha_hora_ingreso = new DateTime($ticket->fecha_ingreso." ".$ticket->hora_ingreso);
+        $fecha_hora_salida = new DateTime(Carbon::now());
+
+        $diff = $fecha_hora_ingreso->diff($fecha_hora_salida);
+        $dias_calculado = $diff->days;
+        $horas_calculado = $diff->h;
+        $minutos_calculado = $diff->i;
+
+        //Diferencia de minutos
+        $diferencia_minutos = ($diff->h * 60) + ($diff->i);
+
+        $tiempo_total = $dias_calculado." días con ".$horas_calculado." horas con  ".$minutos_calculado." min." ;
+                
+        switch ($ticket->tarifa->tipo){
+            case 'hora':
+                switch($ticket->tarifa->nombre){
+                    case 'regular':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $horas_calculado = $horas_calculado + 1;
+                        } else {
+                            $horas_calculado = $horas_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','hora')->where('nombre','regular')->where('cantidad',$horas_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'nocturna':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $horas_calculado = $horas_calculado + 1;
+                        } else {
+                            $horas_calculado = $horas_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','hora')->where('nombre','nocturna')->where('cantidad',$horas_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'fin_de_semana':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $horas_calculado = $horas_calculado + 1;
+                        } else {
+                            $horas_calculado = $horas_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','hora')->where('nombre','fin_de_semana')->where('cantidad',$horas_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'feriados':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $horas_calculado = $horas_calculado + 1;
+                        } else {
+                            $horas_calculado = $horas_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','hora')->where('nombre','feriados')->where('cantidad',$horas_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                }
+            break;
+
+            case 'dia':
+                switch($ticket->tarifa->nombre){
+                    case 'regular':
+                        if ($diferencia_minutos > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','dia')->where('nombre','regular')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'nocturna':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','dia')->where('nombre','nocturna')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'fin_de_semana':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','dia')->where('nombre','fin_de_semana')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'feriados':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','dia')->where('nombre','feriados')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                }
+            break;
+
+            case 'noche':
+                switch($ticket->tarifa->nombre){
+                    case 'regular':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','noche')->where('nombre','regular')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'nocturna':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','noche')->where('nombre','nocturna')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'fin_de_semana':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','noche')->where('nombre','fin_de_semana')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                    case 'feriados':
+                        if ($minutos_calculado > $ticket->tarifa->minutos_de_gracia) {
+                            $dias_calculado = $dias_calculado + 1;
+                        } else {
+                            $dias_calculado = $dias_calculado;
+                        }
+                        $precio = Tarifa::where('tipo','noche')->where('nombre','feriados')->where('cantidad',$dias_calculado)->first();
+                        $monto_total = $precio->costo;
+                    break;
+                }
+            break;
+        }
+        print_r($monto_total);
+
     }
 
     /**

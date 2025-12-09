@@ -156,19 +156,19 @@ class DatabaseSeeder extends Seeder
         Tarifa::create(['nombre'=>'regular', 'tipo'=>'hora', 'cantidad'=>'22', 'costo'=>'110', 'minutos_de_gracia'=>'30']);
         Tarifa::create(['nombre'=>'regular', 'tipo'=>'hora', 'cantidad'=>'23', 'costo'=>'115', 'minutos_de_gracia'=>'30']);
 
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'1', 'costo'=>'50',  'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'2', 'costo'=>'80',  'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'3', 'costo'=>'120', 'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'4', 'costo'=>'150', 'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'5', 'costo'=>'200', 'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'6', 'costo'=>'300', 'minutos_de_gracia'=>'60']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'1', 'costo'=>'50',  'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'2', 'costo'=>'100',  'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'3', 'costo'=>'150', 'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'4', 'costo'=>'200', 'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'5', 'costo'=>'250', 'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'dia', 'cantidad'=>'6', 'costo'=>'300', 'minutos_de_gracia'=>'720']);
 
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'1', 'costo'=>'60',  'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'2', 'costo'=>'90',  'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'3', 'costo'=>'130', 'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'4', 'costo'=>'150', 'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'5', 'costo'=>'210', 'minutos_de_gracia'=>'60']);
-        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'6', 'costo'=>'290', 'minutos_de_gracia'=>'60']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'1', 'costo'=>'50',  'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'2', 'costo'=>'100',  'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'3', 'costo'=>'150', 'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'4', 'costo'=>'200', 'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'5', 'costo'=>'250', 'minutos_de_gracia'=>'720']);
+        Tarifa::create(['nombre'=>'regular', 'tipo'=>'noche', 'cantidad'=>'6', 'costo'=>'300', 'minutos_de_gracia'=>'720']);
 
 
         // Cliente 1 y su vehículo

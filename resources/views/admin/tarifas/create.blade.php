@@ -43,7 +43,7 @@
                                     <select class="form-control" name="nombre" id="nombre" required>
                                     <option value="">Seleccione una tarifa</option>    
                                     <option value="regular" {{ old('nombre') == 'regular' ? 'selected' : '' }}> Tarifa Regular</option>
-                                    <option value="nocturna" {{ old('nombre') == 'nocturna' ? 'selected' : '' }}> Tarifa nocturna</option>
+                                    <option value="nocturna" {{ old('nombre') == 'nocturna' ? 'selected' : '' }}> Tarifa nocturno</option>
                                     <option value="fin_de_semana" {{ old('nombre') == 'fin_de_semana' ? 'selected' : '' }}> Fin de semana</option>
                                     <option value="feriados" {{ old('nombre') == 'feriados' ? 'selected' : '' }}> Feriados</option>                                   
                                 </select>    
