@@ -36,7 +36,16 @@
                         <div class="col-md-1 col-4" style="text-align: center">
                             <h5>ESP-{{ $espacio->numero }}</h2> 
                                 @if ($ticket_activo)
-                                    <button class="btn btn-danger border border-dark  btn-ocupado" data-ticket-id="{{ $ticket_activo->id }}" style="width: 100%;height:200px">
+                                    <button class="btn btn-danger border border-dark  btn-ocupado" 
+                                    data-ticket-id="{{ $ticket_activo->id }}" 
+                                    data-codigo="{{ $ticket_activo->codigo_ticket }}"
+                                    data-cliente="{{ $ticket_activo->cliente->nombres }}"
+                                    data-documento="{{ $ticket_activo->cliente->nro_documento }}"
+                                    data-placa="{{ $ticket_activo->vehiculo->placa }}"
+                                    data-numero_espacio="{{ $ticket_activo->espacio->numero }}"
+                                    data-fecha_ingreso="{{ $ticket_activo->fecha_ingreso }}"
+                                    data-hora_ingreso="{{ $ticket_activo->hora_ingreso }}"
+                                        style="width: 100%;height:200px">
                                         <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 60px; margin-top: 5px;"><br>
                                         <small>{{ $ticket_activo->vehiculo->placa }}</small><br>
                                         <small>{{ $ticket_activo->fecha_ingreso }}</small><br>
@@ -144,7 +153,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="obs">Observacion</label><b>
+                            <label for="obs">Observacion</label>
                             <textarea name="obs" class="form-control" id="obs" cols="30" rows="2"></textarea>
                         </div>
                     </div>
@@ -178,7 +187,7 @@
 
     <!-- Modal en ocupado -->
     <div class="modal fade" id="modal_ocupado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: rgb(134, 13, 13);color:white">
                     <h5 class="modal-title" id="exampleModalLabel">Finalizar ticket </h5>
@@ -187,13 +196,67 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: center">
+                                <!-- Título -->
+                            <h2 style="margin: 5px 0; text-align: center">
+                                <b>TICKET: </b> <span id="codigo_ticket"></span>
+                            </h3>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b>Datos del cliente: </b> <br>
+                                <b>Señor(a):</b> <span id="cliente"></span><br>
+                                <b>Documento:</b> <span id="documento"></span><br>
+                                <b>Placa:</b> <span id="placa"></span><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b>Espacio nro: </b><span id="numero_espacio"></span><br>
+                                <b>Fecha de Ingreso: </b> <span id="fecha_ingreso"></span><br>
+                                <b>Hora de Ingreso: </b> <span id="hora_ingreso"></span><br>
+                            </div>
+                        </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="#" id="btn_imprimir_ticket" class="btn btn-warning"><i class="fas fa-print"></i>Imprimir</a>
+                                <button class="btn btn-secondary" data-dismiss="modal" > Cerrar</button>
+
+                                <form action="" method="post" id="form_cancel_ticket" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="ticket_id" id="ticket_id">
+                                <button type="submit" class="btn btn-danger" id="btn_cancelar_ticket">
+                                    <i class="fas fa-trash-alt"></i> Cancelar
+                                </button>
+                                </form>
+                                
+                                <a href="#" id="btn_imprimir_ticket" data-dismiss="modal" data-toggle="modal" 
+                                data-target="#modal_pdf_ticket" class="btn btn-warning"><i class="fas fa-print"></i> Imprimir</a>
+
+                                <a href="#" id="btn_facturar" data-toggle="modal" 
+                                class="btn btn-success"><i class="fas fa-money-bill"></i> Facturar</a>
                             </div>
                         </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+    <!-- Modal vista ticket -->
+    <div class="modal fade" id="modal_pdf_ticket" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: rgb(136, 54, 37);color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Impresión del Ticket </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <iframe id="pdf_iframe_ticket" style="width: 100%;height:50vh " frameborder="0"></iframe>
                 </div>
             </div>    
         </div>
@@ -210,6 +273,7 @@
 
 @section('js')
     <script>
+            let ticket_a_imprimir = null;
         $(document).ready(function(){
             $('.select2').select2({
                 allowClear: true,
@@ -261,9 +325,72 @@
 
         $('.btn-ocupado').on('click',function(){
             var ticket_id = $(this).data('ticket-id');
-            var urlImprimir = "{{ url('/admin/ticket/') }}"+ "/" +ticket_id +"/imprimir";
-            $('#btn_imprimir_ticket').attr('href',urlImprimir);
+            var codigo = $(this).data('codigo');
+            var cliente = $(this).data('cliente');
+            var documento = $(this).data('documento');
+            var placa = $(this).data('placa');
+            var numero_espacio = $(this).data('numero_espacio');
+            var fecha_ingreso = $(this).data('fecha_ingreso');
+            var hora_ingreso = $(this).data('hora_ingreso');
+            
+            $('#ticket_id').val(ticket_id);
+            $('#codigo_ticket').html(codigo);
+            $('#cliente').html(cliente);
+            $('#documento').html(documento);
+            $('#placa').html(placa);
+            $('#numero_espacio').html(numero_espacio);
+            $('#fecha_ingreso').html(fecha_ingreso);
+            $('#hora_ingreso').html(hora_ingreso);
+            
+            ticket_a_imprimir = $(this).data('ticket-id');
+
+            //$('#btn_imprimir_ticket').attr('href',urlImprimir);
             $('#modal_ocupado').modal('show');
         });
+
+        $('#btn_imprimir_ticket').on('click',function(){
+            if (ticket_a_imprimir) {
+                var urlImprimir = "{{ url('/admin/ticket/') }}"+ "/" + ticket_a_imprimir +"/imprimir";
+                $('#pdf_iframe_ticket').attr('src',urlImprimir);
+            }
+        });
+
     </script>
+
+    @if(session('ticket_id'))
+        <script>
+            var ticket_id = "{{ session('ticket_id') }}"
+            var urlImprimir = "{{ url('/admin/ticket/') }}"+ "/" + ticket_id +"/imprimir";
+            $('#pdf_iframe_ticket').attr('src',urlImprimir);
+            $('#modal_pdf_ticket').modal('show');
+        </script>
+    @endif
+    
+    <script>
+        $('#btn_cancelar_ticket').on('click',function(){
+            event.preventDefault();
+            var ticket_id = $('#ticket_id').val();
+            if(ticket_id){
+                Swal.fire({
+                title: '¿Estás seguro que desea eliminar?',
+                text: '',
+                icon: 'question',
+                showDenyButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                confirmButtonColor: '#dc3545',
+                denyButtonColor: '#6e7176',
+                denyButtonText: 'Cancelar',         
+            }).then((result) => {
+                if (result.isConfirmed) {
+                 //java script para enviar el formulario
+                var form = $('#form_cancel_ticket');
+                var url = "{{ url('/admin/ticket/') }}"+ "/" + ticket_id;
+                form.attr('action',url);
+                form.submit();
+                } 
+            } );
+            }
+        });
+    </script>
+
 @stop

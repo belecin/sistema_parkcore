@@ -10,8 +10,8 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 12px;
             line-height: 1.2;
-            width: 300px;
-            max-width: 300px;
+            width: 283.46px;
+            max-width: 283.46px;
             overflow-x: hidden;
             margin: 0px;
             padding: 0px;
@@ -72,7 +72,8 @@
             <div class="footer" style="text-align: center">
                 <small style="font-size: 6pt">
                     <b>Hora de impresión:</b> {{ $fecha_hora }} <br>
-                    <b>Usuario: </b>  {{ $ticket->usuario->name }} 
+                    <b>Usuario: </b>  {{ $ticket->usuario->name }} <br>
+                    <b>¡Gracias por su preferencia!</b>
                     
                 </small>
             </div>

@@ -94,8 +94,9 @@ class TicketController extends Controller
         $ticket->save();
 
         return redirect()->route('admin.tickets.index')
-        ->with('mensaje', 'Ticket registrado correctamente')
-        ->with('icono','success');
+            ->with('mensaje', 'Ticket registrado correctamente')
+            ->with('icono','success')
+            ->with('ticket_id', $ticket->id);
     }
 
 
@@ -105,17 +106,19 @@ class TicketController extends Controller
 
         $fecha_hora = Carbon::now();
 
-        $pdf = PDF::loadView('admin.tickets.ticket_pdf',compact('ticket','ajuste','fecha_hora'));
+        $pdf = pdf::loadView('admin.tickets.ticket_pdf',compact('ticket','ajuste','fecha_hora'));
         // Configuración para impresora térmica (80mm de ancho, alto automático)
         $pdf->setOptions([
             'dpi' => 120,
-            'defaultPaperSize' => [0, 0, 226.77, 0], // 80mm = 226.77 puntos
+            //'defaultPaperSize' => [0, 0, 226.77, 0], // 80mm = 226.77 puntos
+            'defaultPaperSize' => [0, 0, 283.46, 800],
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true,
             'defaultFont' => 'Arial Narrow'
         ]);
 
-        $pdf->setPaper([0, 0, 226.77, 999999]); // 80mm de ancho, alto infinito
+        //$pdf->setPaper([0, 0, 226.77, 999999]); // 80mm de ancho, alto infinito
+        $pdf->setPaper([0, 0, 283.46, 800]); // 80mm de ancho, alto infinito
         return $pdf->stream("ticket.pdf");
     }
 
@@ -142,12 +145,16 @@ class TicketController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ticket $ticket)
+    public function destroy($id)
     {
-        //
+        $ticket = Ticket::find($id);
+        $ticket->delete();
+
+        return redirect()->route('admin.tickets.index')
+            ->with('mensaje', 'Ticket cancelado correctamente')
+            ->with('icono','success');
     }
 }
