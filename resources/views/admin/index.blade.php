@@ -2,11 +2,102 @@
 
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <div class="container-fluid">
+            <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0"><h1><b>Bienvenido(a): </b> {{ Auth::user()->name }} </h1></h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href=""><b class="text-secondary">Rol: {{ Auth::user()->roles->pluck('name')->implode(', ') }}</b></a></li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+
+    <hr>
+    
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info">
+                                <a href="{{ url('/admin/roles') }}">
+                                    <img src="{{ url('/images/roles2.gif') }}" width="100%" alt="">
+                                </a>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Roles registrados</span>
+                                <span class="info-box-number">{{ $total_roles }} roles</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info">
+                                <a href="{{ url('/admin/usuarios') }}">
+                                    <img src="{{ url('/images/usuario.gif') }}" width="100%" alt="">
+                                </a>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Usuarios registrados</span>
+                                <span class="info-box-number">{{ $total_usuarios }} Usuarios</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info">
+                                <a href="{{ url('/admin/espacios') }}">
+                                    <img src="{{ url('/images/aparcamiento.gif') }}" width="100%" alt="">
+                                </a>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Espacios registrados</span>
+                                <span class="info-box-number">{{ $total_espacios}} Espacios</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-outline card-secondary">
+                <div class="card-header">
+                <h3 class="card-title"><b>Calendario</b></h3>
+    
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">      
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            </div>
+            </div>
+
+
+            
+        </div>
+    </div>
 @stop
 
 @section('css')
@@ -15,5 +106,33 @@
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendar = new VanillaCalendar('#calendar', {
+                type: 'default',
+                settings: {
+                    lang: 'es',
+                    visibility: {
+                        theme: 'light'
+                    }
+                },
+                locale: {
+                    months: [
+                        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+                    weekday: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+                },
+                actions: {
+                    clickDay(event, self) {
+                        console.log('Fecha seleccionada:', self.selectedDates[0]);
+                    }
+                }
+            });
+
+            calendar.HTMLElement.style.width = '100%';
+            calendar.HTMLElement.style.maxWidth = '100%';
+            calendar.init();
+        });
+    </script>
 @stop
