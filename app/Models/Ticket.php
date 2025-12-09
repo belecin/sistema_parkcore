@@ -40,4 +40,7 @@ class Ticket extends Model
     public function usuario(){
         return $this->belongsTo(User::class);
     }
+    public function facturacion(){
+        return $this->hasOne(Facturacion::class);
+    }
 }
