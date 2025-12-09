@@ -7,6 +7,8 @@ use App\Models\Facturacion;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
+use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 class FacturacionController extends Controller
 {
     /**
@@ -23,7 +25,13 @@ class FacturacionController extends Controller
 
         $fecha_hora = Carbon::now();
 
-        $pdf = pdf::loadView('admin.facturacion.factura_pdf',compact( 'factura','ajuste','fecha_hora'));
+        $qr = "Esta factura numero ".$factura->nro_factura." corresponde al cliente: ".$factura->nombre_cliente." con numero 
+        de documento".$factura->nro_documento." con la placa del vehiculo:".$factura->placa.", por el ".$factura->detalle.", con 
+        un costo total de ".$factura->monto;
+        $barcodePNG = 'data:image/png;base64,' . DNS2D::getBarcodePNG($qr,'QRCODE',4,4);
+
+
+        $pdf = pdf::loadView('admin.facturacion.factura_pdf',compact( 'factura','ajuste','fecha_hora','barcodePNG'));
         // Configuración para impresora térmica (80mm de ancho, alto automático)
         $pdf->setOptions([
             'dpi' => 120,

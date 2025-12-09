@@ -10,8 +10,8 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 12px;
             line-height: 1.2;
-            width: 283.46px;
-            max-width: 283.46px;
+            width: 300px;
+            max-width: 300px;
             overflow-x: hidden;
             margin: 0px;
             padding: 0px;
@@ -98,6 +98,13 @@
                 </table>
                 <p style="text-align: right"><b>Monto Total:</b>{{ $ajuste->divisa." ".$factura->monto }}</p>
             </div>
+
+            <div class="line"></div>
+            
+            <p style="text-align: center">
+                <img src="{{$barcodePNG }}" style="width: 100px; height: 100px; display:block; margin: 0 auto;">
+            </p>
+
             <div class="line"></div> 
 
             <!-- Firmas -->
