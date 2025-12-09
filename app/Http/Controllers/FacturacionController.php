@@ -18,7 +18,7 @@ class FacturacionController extends Controller
     }
 
     public function imprimir_factura($id){
-        $factura = Facturacion::fins($id);
+        $factura = Facturacion::find($id);
         $ajuste = Ajuste::first();
 
         $fecha_hora = Carbon::now();

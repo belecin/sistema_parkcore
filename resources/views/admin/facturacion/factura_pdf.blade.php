@@ -37,7 +37,7 @@
         th, td {
             border: 1px solid #000;
             padding: 3px;
-            font-size: 10%;
+            font-size: 10px;
         }
 
         </style>
@@ -48,7 +48,7 @@
             <div class="header" style="text-align: center">
                 <b style="">{{ $ajuste->nombre }}</b><br>
                 {{ $ajuste->descripcion }}<br>
-                {{ $ajuste->sucursal }}<br>
+                Sucursal: {{ $ajuste->sucursal }}<br>
                 {{ $ajuste->direccion }}<br>
                 {{ $ajuste->telefonos }}<br>
             </div>
@@ -98,7 +98,7 @@
                 </table>
                 <p style="text-align: right"><b>Monto Total:</b>{{ $ajuste->divisa." ".$factura->monto }}</p>
             </div>
-            <div class="line"></div>
+            <div class="line"></div> 
 
             <!-- Firmas -->
             <div class="footer" style="text-align: center">
