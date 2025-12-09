@@ -237,8 +237,7 @@
                                 <a href="#" id="btn_imprimir_ticket" data-dismiss="modal" data-toggle="modal" 
                                 data-target="#modal_pdf_ticket" class="btn btn-warning"><i class="fas fa-print"></i> Imprimir</a>
 
-                                <a href="#" id="btn_facturar" 
-                                class="btn btn-success"><i class="fas fa-money-bill"></i> Facturar</a>
+                                <a href="#" id="btn_facturar" class="btn btn-success"><i class="fas fa-money-bill"></i> Facturar</a>
                             </div>
                         </div>
                 </div>

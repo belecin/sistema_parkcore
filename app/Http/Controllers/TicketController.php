@@ -101,7 +101,6 @@ class TicketController extends Controller
             ->with('ticket_id', $ticket->id);
     }
 
-
     public function imprimir_ticket($id){
 
         $ticket = Ticket::with('cliente')->find($id);
@@ -126,9 +125,7 @@ class TicketController extends Controller
     }
 
     public function finalizar_ticket($id){
-        //$ticket = Ticket::find($id);
-        $ticket = Ticket::with('tarifa')->find($id);
-
+        $ticket = Ticket::find($id);
         $fecha_hora_ingreso = new DateTime($ticket->fecha_ingreso." ".$ticket->hora_ingreso);
         $fecha_hora_salida = new DateTime(Carbon::now());
 
@@ -274,6 +271,7 @@ class TicketController extends Controller
         $ticket->tiempo_total = $tiempo_total;
         $ticket->monto_total = $monto_total;
         $ticket->estado_ticket = 'completado';
+        
         $ticket->save();
 
 

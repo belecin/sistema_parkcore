@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ajuste;
 use App\Models\Facturacion;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 class FacturacionController extends Controller
 {
     /**
@@ -16,8 +18,25 @@ class FacturacionController extends Controller
     }
 
     public function imprimir_factura($id){
-        //echo $factura = Facturacion::fins($id);
-        //echo $id;
+        $factura = Facturacion::fins($id);
+        $ajuste = Ajuste::first();
+
+        $fecha_hora = Carbon::now();
+
+        $pdf = pdf::loadView('admin.facturacion.factura_pdf',compact( 'factura','ajuste','fecha_hora'));
+        // Configuración para impresora térmica (80mm de ancho, alto automático)
+        $pdf->setOptions([
+            'dpi' => 120,
+            //'defaultPaperSize' => [0, 0, 226.77, 0], // 80mm = 226.77 puntos
+            'defaultPaperSize' => [0, 0, 283.46, 800],
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'defaultFont' => 'Arial Narrow'
+        ]);
+
+        //$pdf->setPaper([0, 0, 226.77, 999999]); // 80mm de ancho, alto infinito
+        $pdf->setPaper([0, 0, 283.46, 800]); // 80mm de ancho, alto infinito
+        return $pdf->stream("factura.pdf");
     }
 
     /**
