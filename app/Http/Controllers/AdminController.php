@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ajuste;
 use App\Models\Cliente;
 use App\Models\Espacio;
 use App\Models\Tarifa;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Vehiculo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -15,6 +17,7 @@ class AdminController extends Controller
 {
     public function index()
     {
+        $ajuste = Ajuste::first();
         $total_roles = Role::count();
         $total_usuarios = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'SUPER ADMIN');
@@ -30,7 +33,39 @@ class AdminController extends Controller
         $total_vehiculos = Vehiculo::count();
         $total_tickets_activos = Ticket::where('estado_ticket','activo')->count();
 
-        return view('admin.index',compact('total_roles','total_usuarios','total_espacios','total_espacios_libres',
-        'total_espacios_ocupados','total_espacios_mantenimiento','total_tarifas','total_clientes','total_vehiculos','total_tickets_activos'));
+        //calculo de ingresos
+        $ingreso_hoy = Ticket::where('estado_ticket','completado')
+        ->whereDate('fecha_salida', Carbon::today())
+        ->sum('monto_total');
+
+        $ingreso_ayer = Ticket::where('estado_ticket','completado')
+        ->whereDate('fecha_salida', Carbon::yesterday())
+        ->sum('monto_total');
+
+        $ingreso_esta_semana = Ticket::where('estado_ticket','completado')
+        ->whereBetween('fecha_salida', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        ->sum('monto_total');
+
+        $ingreso_semana_anterior = Ticket::where('estado_ticket','completado')
+        ->whereBetween('fecha_salida', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()])
+        ->sum('monto_total');
+
+        $ingreso_este_mes = Ticket::where('estado_ticket','completado')
+        ->whereMonth('fecha_salida', Carbon::now()->month)
+        ->whereYear('fecha_salida', Carbon::now()->year)
+        ->sum('monto_total');
+
+        $ingreso_mes_anterior = Ticket::where('estado_ticket','completado')
+        ->whereMonth('fecha_salida', Carbon::now()->subMonth()->month)
+        ->whereYear('fecha_salida', Carbon::now()->subMonth()->year)
+        ->sum('monto_total');
+
+        $ingreso_total = Ticket::where('estado_ticket','completado')
+        ->sum('monto_total');
+
+        return view('admin.index',compact('ajuste','total_roles','total_usuarios','total_espacios','total_espacios_libres',
+        'total_espacios_ocupados','total_espacios_mantenimiento','total_tarifas','total_clientes','total_vehiculos',
+        'total_tickets_activos','ingreso_hoy','ingreso_ayer','ingreso_esta_semana','ingreso_semana_anterior',
+        'ingreso_este_mes','ingreso_mes_anterior','ingreso_total'));
     }
 }

@@ -297,7 +297,7 @@ class TicketController extends Controller
         return redirect()->route('admin.tickets.index')
             ->with('mensaje', 'Ticket facturado correctamente')
             ->with('icono','success')
-            ->with('ticket_id', $ticket->id);
+            ->with('factura_id', $factura->id);
 
     }
 

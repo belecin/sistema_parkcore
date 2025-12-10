@@ -260,6 +260,23 @@
             </div>    
         </div>
     </div>
+
+    <!-- Modal vista factura -->
+    <div class="modal fade" id="modal_pdf_factura" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: rgb(136, 54, 37);color:white">
+                    <h5 class="modal-title" id="exampleModalLabel">Impresión de la Factura </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <iframe id="pdf_iframe_factura" style="width: 100%;height:50vh " frameborder="0"></iframe>
+                </div>
+            </div>    
+        </div>
+    </div>
 @stop
 
 @section('css')
@@ -365,6 +382,15 @@
             var urlImprimir = "{{ url('/admin/ticket/') }}"+ "/" + ticket_id +"/imprimir";
             $('#pdf_iframe_ticket').attr('src',urlImprimir);
             $('#modal_pdf_ticket').modal('show');
+        </script>
+    @endif
+
+    @if(session('factura_id'))
+        <script>
+            var factura_id = "{{ session('factura_id') }}"
+            var urlImprimir = "{{ url('/admin/factura/') }}"+ "/" + factura_id ;
+            $('#pdf_iframe_factura').attr('src',urlImprimir);
+            $('#modal_pdf_factura').modal('show');
         </script>
     @endif
     
