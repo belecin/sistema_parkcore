@@ -45,6 +45,8 @@
                                     data-numero_espacio="{{ $ticket_activo->espacio->numero }}"
                                     data-fecha_ingreso="{{ $ticket_activo->fecha_ingreso }}"
                                     data-hora_ingreso="{{ $ticket_activo->hora_ingreso }}"
+                                    data-tarifa_nombre="{{ $ticket_activo->tarifa->nombre }}"
+                                    data-tarifa_tipo="{{ $ticket_activo->tarifa->tipo }}"
                                         style="width: 100%;height:200px">
                                         <img src="{{asset('storage/logos/' . $ajuste->logo_auto) }}" style="max-width: 60px; margin-top: 5px;"><br>
                                         <small>{{ $ticket_activo->vehiculo->placa }}</small><br>
@@ -131,7 +133,7 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="tarifas">Tarifas</label><b> (*)</b>
                                 <div class="input-group mb-3">
@@ -140,8 +142,7 @@
                                     </div>
                                     <select name="tarifa_id" id="tarifa_id" class="form-control select2">
                                         @foreach ($tarifas as $tarifa)
-                                        <option value="{{ $tarifa->id }}">Tarifa: {{ $tarifa->nombre }} - Tipo: {{ $tarifa->tipo }} - 
-                                            Cantidad: {{ $tarifa->cantidad }} - Costo: {{ $ajuste->divisa."".$tarifa->costo }}</option>
+                                        <option value="{{ $tarifa->id }}">Tarifa: {{ $tarifa->nombre }} - Tipo: {{ $tarifa->tipo }}</option>
                                         @endforeach                                       
                                     </select>
                                 </div>
@@ -150,11 +151,9 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="obs">Observacion</label>
-                            <textarea name="obs" class="form-control" id="obs" cols="30" rows="2"></textarea>
+                            <textarea name="obs" class="form-control" id="obs" cols="30" rows="1"></textarea>
                         </div>
                     </div>
 
@@ -218,6 +217,14 @@
                                 <b>Espacio nro: </b><span id="numero_espacio"></span><br>
                                 <b>Fecha de Ingreso: </b> <span id="fecha_ingreso"></span><br>
                                 <b>Hora de Ingreso: </b> <span id="hora_ingreso"></span><br>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b>Datos de Tarifa: </b> <br>
+                                <b>Nombre: </b> <span id="tarifa_nombre"></span><br>
+                                <b>Tipo: </b> <span id="tarifa_tipo"></span><br>
                             </div>
                         </div>
                         <hr>
@@ -348,6 +355,8 @@
             var numero_espacio = $(this).data('numero_espacio');
             var fecha_ingreso = $(this).data('fecha_ingreso');
             var hora_ingreso = $(this).data('hora_ingreso');
+            var tarifa_nombre = $(this).data('tarifa_nombre');
+            var tarifa_tipo = $(this).data('tarifa_tipo');
             
             $('#ticket_id').val(ticket_id);
             $('#codigo_ticket').html(codigo);
@@ -357,11 +366,29 @@
             $('#numero_espacio').html(numero_espacio);
             $('#fecha_ingreso').html(fecha_ingreso);
             $('#hora_ingreso').html(hora_ingreso);
+            $('#tarifa_nombre').html(tarifa_nombre);
+            $('#tarifa_tipo').html(tarifa_tipo);
             
             ticket_a_imprimir = $(this).data('ticket-id');
 
             var url_finalizar_ticket = "{{ url('/admin/ticket/') }}"+ "/" + ticket_a_imprimir +"/finalizar_ticket";
             $('#btn_facturar').attr('href',url_finalizar_ticket);
+
+
+            //Calcular tiempo de cancelar ticket
+            const fechaHoraIngreso = new Date(fecha_ingreso +" "+hora_ingreso);
+            const ahora = new Date();
+            const diferenciaMinutos = Math.floor((ahora-fechaHoraIngreso)/60000);
+            const botonCancelar= $('#btn_cancelar_ticket');
+            if(diferenciaMinutos > 10){ //tiempo 
+                botonCancelar.prop('disabled',true);
+            }else{
+                botonCancelar.prop('disabled',false);
+            }
+            
+            
+            //alert(diferenciaMinutos);
+
 
             //$('#btn_imprimir_ticket').attr('href',urlImprimir);
             $('#modal_ocupado').modal('show');
