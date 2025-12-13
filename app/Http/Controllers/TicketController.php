@@ -108,6 +108,22 @@ class TicketController extends Controller
             ->with('ticket_id', $ticket->id);
     }
 
+    public function actualizar_tarifa(Request $request){
+        //return response()->json($request->all());
+        $request->validate([
+            'ticket_id_editar_tarifa' => 'required',
+            'tarifa_id' => 'required',
+        ]);
+
+        $ticket = Ticket::find($request->ticket_id_editar_tarifa);
+        $ticket->tarifa_id = $request->tarifa_id;
+        $ticket->save();
+
+        return redirect()->route('admin.tickets.index')
+            ->with('mensaje', 'Tarifa actualizado correctamente')
+            ->with('icono','success');
+    }
+
     public function imprimir_ticket($id){
 
         $ticket = Ticket::with('cliente')->find($id);
@@ -132,7 +148,9 @@ class TicketController extends Controller
     }
 
     public function finalizar_ticket($id){
+
         $ticket = Ticket::find($id);
+
         $fecha_hora_ingreso = new DateTime($ticket->fecha_ingreso." ".$ticket->hora_ingreso);
         $fecha_hora_salida = new DateTime(Carbon::now());
 
@@ -144,7 +162,7 @@ class TicketController extends Controller
         //Diferencia de minutos
         $diferencia_minutos = ($diff->h * 60) + ($diff->i);
 
-        $tiempo_total = $dias_calculado." días con ".$horas_calculado." horas con  ".$minutos_calculado." min." ;
+        $tiempo_total = $dias_calculado." días con ".$horas_calculado." horas con ".$minutos_calculado." min." ;
                 
         switch ($ticket->tarifa->tipo){
             case 'hora':
