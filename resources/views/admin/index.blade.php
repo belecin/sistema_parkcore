@@ -241,30 +241,56 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-outline card-info">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>Ingresos Mensuales</b></h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">      
+                            <canvas id="ingresosMensuales"></canvas>
+                            </div>
+                            <!-- /.card-body -->
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-outline card-info">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>Estado de Seguimiento</b></h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">      
+                                <canvas id="estadoEspaciosPorTickets"></canvas>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="col-md-3">
                 <h1 id="reloj-hora" class="text-center font-weight-bold"></h1>
                 <h5 id="reloj-fecha" class="text-center"></h5>
                 <div class="card card-outline card-secondary">
-                <div class="card-header">
-                <h3 class="card-title"><b>Calendario</b></h3>
-    
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">      
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="calendar"></div>
+                    <div class="card-header">
+                        <h3 class="card-title"><b>Calendario</b></h3>
                     </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">      
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="calendar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
             </div>
-            <!-- /.card-body -->
-            </div>
-            </div>
 
-
-            
         </div>
     </div>
 @stop
@@ -284,6 +310,80 @@
 @stop
 
 @section('js')
+
+<script>
+    const ingresosData = @json(array_values($ingresos_data));
+    const ctx1 = document.getElementById('ingresosMensuales').getContext('2d');
+    new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            datasets: [{
+                label: 'Ingresos ($)',
+                data: ingresosData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+    @php
+        $ticketsOcupados = 0;
+        $espaciosLibres = 0;
+        $espaciosMantenimiento = 0;
+    @endphp
+
+    @foreach ($espacios as $espacio)
+        @php
+            $ticket_activo = $tickets_activos->firstWhere('espacio_id',$espacio->id);
+            if($ticket_activo){
+                $ticketsOcupados++;
+            }elseif($espacio->estado == 'libre'){
+                $espaciosLibres++;
+            }elseif($espacio->estado == 'mantenimiento'){
+                $espaciosMantenimiento++;
+            }
+        @endphp
+    @endforeach
+
+
+    const ticketsOcupados = {{ $ticketsOcupados  }};
+    const espaciosLibres = {{ $espaciosLibres  }};
+    const espaciosMantenimiento = {{ $espaciosMantenimiento }};
+    // --- Gráfico de Pastel: Estado de Espacios ---
+    const ctxPie = document.getElementById('estadoEspaciosPorTickets').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ['Ocupados', 'Libres', 'En Mantenimiento'],
+            datasets: [{
+                data: [ticketsOcupados, espaciosLibres, espaciosMantenimiento],
+                backgroundColor: ['#dc3545', '#f5e6d3', '#ffc107'], // Rojo, crema, Amarillo
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+
+
+</script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const calendar = new VanillaCalendar('#calendar', {

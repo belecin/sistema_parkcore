@@ -31,7 +31,7 @@
                 <div class="row">
                     @foreach ($espacios as $espacio)
                     @php
-                        $ticket_activo = $tickets_activos->firstWhere('espacio_id',$espacio->id)
+                        $ticket_activo = $tickets_activos->firstWhere('espacio_id',$espacio->id);
                     @endphp
                         <div class="col-md-1 col-4" style="text-align: center">
                             <h5>ESP-{{ $espacio->numero }}</h2> 
@@ -52,20 +52,20 @@
                                         <small>{{ $ticket_activo->hora_ingreso }}</small>
                                     </button> 
                                 @else
-                                    @if ($espacio->estado == "libre") 
+                                    @if ($espacio->estado == 'libre') 
                                     <button class="btn btn-white border border-dark  btn-ticket" data-espacio-id="{{ $espacio->id }} " data-numero-espacio="{{ $espacio->numero }}"
                                         style="width: 100%;height:200px">
                                         LIBRE
                                     </button>                       
                                     @endif
                                 
-                                    @if ($espacio->estado == "mantenimiento") 
+                                    @if ($espacio->estado == 'mantenimiento') 
                                             <button class="btn btn-warning border border-dark  btn-mantenimiento"
                                                 style="width: 100%;height:200px">
                                                 <small>Mantenimiento</small>
                                             </button>                       
                                     @endif
-                                    @if ($espacio->estado == "ocupado") 
+                                    @if ($espacio->estado == 'ocupado') 
                                     <button class="btn btn-danger border border-dark " 
                                     style="width: 100%;height:200px">
                                         OCUPADO
