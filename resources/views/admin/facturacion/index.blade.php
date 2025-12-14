@@ -6,12 +6,12 @@
 <div class="container-fluid">
         <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0">Lista de roles</h1>
+            <h1 class="m-0">Lista de facturas</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Inicio</a></li>
-                    <li class="breadcrumb-item active">Roles</li>
+                    <li class="breadcrumb-item active">Facturas realizadas</li>
             </ol>
         </div><!-- /.col -->
         </div><!-- /.row -->
@@ -25,10 +25,7 @@
         <div class="col-md-12">
             <div class="card card-outline card-secondary">
                 <div class="card-header">
-                <h3 class="card-title"><b>Roles registrados</b></h3>
-                <!-- /.card-tools -->   
-                <div class="card-tools">
-                    <a href="{{ url('admin/roles/create') }}"class="btn btn-secondary"><i class="fas fa-plus"></i> Crear nuevo</a>
+                    <h3 class="card-title"><b>Facturas registrados</b></h3>
                 </div>          
             </div>
             <!-- /.card-header -->
@@ -40,7 +37,13 @@
                             <thead class="bg-secondary">
                                 <tr>
                                     <th style="width: 10px">Nro</th>
-                                    <th>Nombre de Rol</th>
+                                    <th>Numero de la Factura</th>
+                                    <th>Cliente</th>
+                                    <th>Documento</th>
+                                    <th>Placa</th>
+                                    <th>Detalle</th>
+                                    <th>Monto</th>
+                                    <th>Fecha y hora de registrado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -48,45 +51,24 @@
                                 @php
                                     $contador = 1;
                                 @endphp
-                                @foreach ($roles as $role)
-                                @if (!($role->name == 'SUPER ADMIN'))
+                                @foreach ($facturas as $factura)
+                                
                                     <tr>
                                     <td>{{ $contador++ }}</td>
-                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $factura->nro_factura }}</td>
+                                    <td>{{ $factura->nombre_cliente}}</td>
+                                    <td>{{ $factura->nro_documento }}</td>
+                                    <td>{{ $factura->placa }}</td>
+                                    <td>{{ $factura->detalle }}</td>
+                                    <td>{{ $ajuste->divisa." ".$factura->monto }}</td>
+                                    <td>{{ $factura->created_at }}</td>
                                     <td class="d-flex justify-center">
-                                        <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-check"></i> Asignar permisos</a>
-                                        <a href="{{ url('admin/rol/'.$role->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
-                                        <form action="{{ url('admin/rol/' .$role->id) }}" method="post" id="miFormulario{{ $role->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="preguntar{{ $role->id }} (event)">
-                                            <i class="fas fa-trash-alt"></i> Eliminar
-                                        </button>
-                                        </form>
-                                        <script>
-                                            function preguntar{{ $role->id }} (evento) {
-                                                evento.preventDefault();
-
-                                                Swal.fire({
-                                                    title: '¿Estás seguro que desea eliminar?',
-                                                    text: '',
-                                                    icon: 'question',
-                                                    showDenyButton: true,
-                                                    confirmButtonText: 'Sí, eliminar',
-                                                    confirmButtonColor: '#dc3545',
-                                                    denyButtonColor: '#6e7176',
-                                                    denyButtonText: 'Cancelar',                                                    
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        document.getElementById('miFormulario{{ $role->id }}').submit(); //java script para enviar el formulario
-                                                    } 
-                                                } );
-                                            } 
-                                        </script>
+                                        <a href="{{ url('/admin/factura' . $factura->id) }}" 
+                                            class="btn btn-warning btn-sm"><i class="fas fa-print"></i> Reimprimir</a>
+                                    
                                     </td>
                                 </tr>
                                     
-                                @endif
                                 @endforeach
                             </tbody>    
                         </table>
@@ -138,10 +120,10 @@
             "pageLength": 6,
             "language": {
             "emptyTable":"No hay información",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Roles",
-            "infoEmpty": "Mostrando 0 a 0 de 0 Roles",
-            "infoFiltered": "(Filtrado de _MAX_ total Roles)",
-            "lengthMenu": "Mostrar _MENU_ Roles",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Facturas",
+            "infoEmpty": "Mostrando 0 a 0 de 0 Facturas",
+            "infoFiltered": "(Filtrado de _MAX_ total Facturas)",
+            "lengthMenu": "Mostrar _MENU_ Facturas",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
             "search": "Buscar:",

@@ -355,6 +355,13 @@ return [
             'classes' => 'bg-white text-black',
             'active' => ['admin/ticket*']
         ],
+        [
+            'text' => 'Facturacion',
+            'url' => 'admin/facturacion',
+            'icon' => 'fas fa-fw fa-file-invoice-dollar',
+            'classes' => 'bg-white text-black',
+            'active' => ['admin/factura*']
+        ],
 
         ['header' => 'Ajustes'],
         [
