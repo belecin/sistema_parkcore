@@ -1,7 +1,7 @@
 @php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
 @php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
 
-@if (config('adminlte.usermenu_profile_url', false))
+@if (config('adminlte.usermenu_profile_url', false) && Auth::check() && method_exists(Auth::user(), 'adminlte_profile_url'))
     @php( $profile_url = Auth::user()->adminlte_profile_url() )
 @endif
 
@@ -17,13 +17,13 @@
 
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-        @if(config('adminlte.usermenu_image'))
+        @if(config('adminlte.usermenu_image') && Auth::check() && method_exists(Auth::user(), 'adminlte_image'))
             <img src="{{ Auth::user()->adminlte_image() }}"
                  class="user-image img-circle elevation-2"
                  alt="{{ Auth::user()->name }}">
         @endif
         <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-            {{ Auth::user()->name }}
+            {{ Auth::check() ? Auth::user()->name : __('adminlte::adminlte.log_in') }}
         </span>
     </a>
 
@@ -34,14 +34,14 @@
         @if(!View::hasSection('usermenu_header') && config('adminlte.usermenu_header'))
             <li class="user-header {{ config('adminlte.usermenu_header_class', 'bg-primary') }}
                 @if(!config('adminlte.usermenu_image')) h-auto @endif">
-                @if(config('adminlte.usermenu_image'))
+                @if(config('adminlte.usermenu_image') && Auth::check() && method_exists(Auth::user(), 'adminlte_image'))
                     <img src="{{ Auth::user()->adminlte_image() }}"
                          class="img-circle elevation-2"
                          alt="{{ Auth::user()->name }}">
                 @endif
                 <p class="@if(!config('adminlte.usermenu_image')) mt-0 @endif">
-                    {{ Auth::user()->name }}
-                    @if(config('adminlte.usermenu_desc'))
+                    {{ Auth::check() ? Auth::user()->name : '' }}
+                    @if(config('adminlte.usermenu_desc') && Auth::check() && method_exists(Auth::user(), 'adminlte_desc'))
                         <small>{{ Auth::user()->adminlte_desc() }}</small>
                     @endif
                 </p>

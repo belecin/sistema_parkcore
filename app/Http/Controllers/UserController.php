@@ -7,7 +7,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -180,5 +183,92 @@ class UserController extends Controller
         return redirect()->route('admin.usuarios.index')
                 ->with('mensaje', 'Usuario restaurado correctamente')
                 ->with('icono','success');
+    }
+
+    /**
+     * Mostrar la vista de perfil del usuario autenticado.
+     */
+    public function perfil()
+    {
+        $id = Auth::id();
+        $usuario = User::find($id);
+        $roles = Role::all();
+        return view('admin.perfil.perfil', compact('usuario','roles'));
+    }
+
+    /**
+     * Actualizar datos del perfil (datos personales, foto y contraseña opcional).
+     */
+    public function perfilUpdate(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+        return redirect()->back()
+            ->with('mensaje', 'No hay usuario autenticado')
+            ->with('icono', 'error');
+    }
+
+        $request->validate([
+            'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($user->id)],
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'tipo_documento' => 'nullable|in:DNI,Carnet Extranjeria,Pasaporte,RUC',
+            'nro_documento' => ['nullable','string','max:255', Rule::unique('users')->ignore($user->id)],
+            'celular' => 'nullable|string|max:20',
+            'fecha_nacimiento' => 'nullable|date',
+            'genero' => 'nullable|in:Masculino,Femenino',
+            'direccion' => 'nullable|string|max:500',
+            'contacto_nombre' => 'nullable|string|max:255',
+            'contacto_telefono' => 'nullable|string|max:20',
+            'contacto_parentesco' => 'nullable|string|max:100',
+            'foto' => 'nullable|image|max:2048',
+            'password' => 'nullable|string|min:8|confirmed',
+            'password_actual' => 'required_if:password,*|string',
+        ]);
+
+        // Actualizar campos personales
+        $user->nombres = $request->nombres;
+        $user->apellidos = $request->apellidos;
+        $user->name = $request->nombres . ' ' . $request->apellidos;
+        $user->email = $request->email;
+        $user->tipo_documento = $request->tipo_documento;
+        $user->nro_documento = $request->nro_documento;
+        $user->celular = $request->celular;
+        $user->fecha_nacimiento = $request->fecha_nacimiento;
+        $user->genero = $request->genero;
+        $user->direccion = $request->direccion;
+        $user->contacto_nombre = $request->contacto_nombre;
+        $user->contacto_telefono = $request->contacto_telefono;
+        $user->contacto_parentesco = $request->contacto_parentesco;
+
+        // Manejo de la foto
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $path = 'users';
+            $filename = 'user_'.$user->id.'_'.time().'.'.$file->getClientOriginalExtension();
+            // eliminar foto anterior si existe
+            if ($user->foto) {
+                Storage::disk('public')->delete($user->foto);
+            }
+            $stored = $file->storeAs($path, $filename, 'public');
+            $user->foto = $stored; // ruta relativa en storage/app/public
+        }
+
+        // Cambio de contraseña opcional
+        if ($request->filled('password')) {
+            if (!Hash::check($request->password_actual, $user->password)) {
+                return redirect()->back()
+                    ->withErrors(['password_actual' => 'La contraseña actual no coincide'])
+                    ->withInput();
+            }
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()
+        ->with('mensaje', 'Perfil actualizado correctamente')
+        ->with('icono','success');
     }
 }

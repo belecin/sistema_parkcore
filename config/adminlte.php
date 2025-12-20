@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>PARK</b>CORE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => 'vendor/adminlte/dist/img/aparcamiento.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/aparcamiento.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/aparcamiento.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -138,7 +138,7 @@ return [
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -263,7 +263,7 @@ return [
     'register_url' => 'register',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
-    'profile_url' => false,
+    'profile_url' => 'perfil',
     'disable_darkmode_routes' => false,
 
     /*
@@ -308,12 +308,14 @@ return [
         // Sidebar items:
         ['header' => 'Menú'],
         [
+            'can' => 'admin.index',
             'text' => 'Inicio',
             'url' => 'admin',
             'icon' => 'fas fa-fw fa-home',
             'classes' => 'bg-white text-black',
         ],
         [
+            'can' => 'admin.roles.index',
             'text' => 'Roles',
             'url' => 'admin/roles',
             'icon' => 'fas fa-fw fa-user-shield',
@@ -321,6 +323,7 @@ return [
             'active' => ['admin/rol*']
         ],
         [
+            'can' => 'admin.usuarios.index',
             'text' => 'Usuarios',
             'url' => 'admin/usuarios',
             'icon' => 'fas fa-fw fa-users',
@@ -328,6 +331,7 @@ return [
             'active' => ['admin/usuario*']
         ],
         [
+            'can' => 'admin.espacios.index',
             'text' => 'Espacios',
             'url' => 'admin/espacios',
             'icon' => 'fas fa-fw fa-parking',
@@ -335,6 +339,7 @@ return [
             'active' => ['admin/espacio*']
         ],
         [
+            'can' => 'admin.tarifas.index',
             'text' => 'Tarifas',
             'url' => 'admin/tarifas',
             'icon' => 'fas fa-fw fa-dollar-sign',
@@ -342,6 +347,7 @@ return [
             'active' => ['admin/tarifa*']
         ],
         [
+            'can' => 'admin.clientes.index',
             'text' => 'Clientes',
             'url' => 'admin/clientes',
             'icon' => 'fas fa-fw fa-user',
@@ -349,6 +355,7 @@ return [
             'active' => ['admin/cliente*']
         ],
         [
+            'can' => 'admin.tickets.index',
             'text' => 'Tickets',
             'url' => 'admin/tickets',
             'icon' => 'fas fa-fw fa-ticket-alt',
@@ -356,6 +363,7 @@ return [
             'active' => ['admin/ticket*']
         ],
         [
+            'can' => 'admin.facturacion.index',
             'text' => 'Facturacion',
             'url' => 'admin/facturacion',
             'icon' => 'fas fa-fw fa-file-invoice-dollar',
@@ -365,6 +373,7 @@ return [
 
         ['header' => 'Ajustes'],
         [
+            'can' => 'admin.ajustes.index',
             'text' => 'Ajustes',
             'url' => 'admin/ajustes',
             'icon' => 'fas fa-fw fa-cogs',

@@ -34,6 +34,7 @@ class User extends Authenticatable
         'contacto_nombre',
         'contacto_telefono',
         'contacto_parentesco',
+        'foto',
         'estado',
     ];
 

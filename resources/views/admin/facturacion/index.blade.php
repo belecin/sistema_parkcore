@@ -63,7 +63,7 @@
                                     <td>{{ $ajuste->divisa." ".$factura->monto }}</td>
                                     <td>{{ $factura->created_at }}</td>
                                     <td class="d-flex justify-center">
-                                        <a href="{{ url('/admin/factura' . $factura->id) }}" 
+                                        <a href="{{ url('/admin/factura/' . $factura->id) }}"
                                             class="btn btn-warning btn-sm"><i class="fas fa-print"></i> Reimprimir</a>
                                     
                                     </td>

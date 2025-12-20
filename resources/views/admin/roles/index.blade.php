@@ -54,7 +54,7 @@
                                     <td>{{ $contador++ }}</td>
                                     <td>{{ $role->name }}</td>
                                     <td class="d-flex justify-center">
-                                        <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-check"></i> Asignar permisos</a>
+                                        <a href="{{ url('admin/rol/'.$role->id.'/permisos') }}" class="btn btn-warning btn-sm"><i class="fas fa-check"></i> Asignar permisos</a>
                                         <a href="{{ url('admin/rol/'.$role->id.'/edit') }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i> Editar</a>
                                         <form action="{{ url('admin/rol/' .$role->id) }}" method="post" id="miFormulario{{ $role->id }}">
                                         @csrf
