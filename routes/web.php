@@ -1,13 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
- 
+
 // Rutas para autogestión de perfil (Mi Perfil)
 Route::get('/perfil', [App\Http\Controllers\UserController::class, 'perfil'])->name('perfil')->middleware('auth','can:perfil');
 Route::post('/perfil', [App\Http\Controllers\UserController::class, 'perfilUpdate'])->name('perfil.update')->middleware('auth','can:perfil.update');
@@ -82,3 +84,9 @@ Route::delete('/admin/ticket/{id}', [App\Http\Controllers\TicketController::clas
 //rutas para facturacion
 Route::get('/admin/factura/{id}', [App\Http\Controllers\FacturacionController::class, 'imprimir_factura'])->name('admin.facturacion.imprimir_factura')->middleware('auth','can:admin.facturacion.imprimir_factura');
 Route::get('/admin/facturacion', [App\Http\Controllers\FacturacionController::class, 'index'])->name('admin.facturacion.index')->middleware('auth','can:admin.facturacion.index');
+
+//rutas para reportes
+Route::get('/admin/reportes', [App\Http\Controllers\ReporteController::class, 'index'])->name('admin.reportes.index')->middleware('auth','can:admin.reportes.index');
+Route::get('/admin/reportes/semanal', [App\Http\Controllers\ReporteController::class, 'reporteSemanal'])->name('admin.reportes.semanal')->middleware('auth','can:admin.reportes.semanal');
+Route::get('/admin/reportes/mensual', [App\Http\Controllers\ReporteController::class, 'reporteMensual'])->name('admin.reportes.mensual')->middleware('auth','can:admin.reportes.mensual');
+Route::get('/admin/reportes/ingresosdiarios', [App\Http\Controllers\ReporteController::class, 'ingresosDiarios'])->name('admin.reportes.ingresosdiarios')->middleware('auth','can:admin.reportes.ingresosdiarios');

@@ -370,6 +370,14 @@ return [
             'classes' => 'bg-white text-black',
             'active' => ['admin/factura*']
         ],
+        [
+            'can' => 'admin.reportes.index',
+            'text' => 'Reportes',
+            'url' => 'admin/reportes',
+            'icon' => 'fas fa-fw fa-chart-line',
+            'classes' => 'bg-white text-black',
+            'active' => ['admin/reporte*']
+        ],
 
         ['header' => 'Ajustes'],
         [

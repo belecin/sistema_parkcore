@@ -86,6 +86,12 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'admin.facturacion.index'])->syncRoles($superAdmin);
         Permission::firstOrCreate(['name' => 'admin.facturacion.imprimir_factura'])->syncRoles($superAdmin);
 
+        // Reportes
+        Permission::firstOrCreate(['name' => 'admin.reportes.index'])->syncRoles($superAdmin);
+        Permission::firstOrCreate(['name' => 'admin.reportes.semanal'])->syncRoles($superAdmin);
+        Permission::firstOrCreate(['name' => 'admin.reportes.mensual'])->syncRoles($superAdmin);
+        Permission::firstOrCreate(['name' => 'admin.reportes.ingresosdiarios'])->syncRoles($superAdmin);
+
         // Perfil (autogestión)
         Permission::firstOrCreate(['name' => 'perfil'])->syncRoles($superAdmin);
         Permission::firstOrCreate(['name' => 'perfil.update'])->syncRoles($superAdmin);
