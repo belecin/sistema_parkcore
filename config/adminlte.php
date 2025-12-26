@@ -379,7 +379,7 @@ return [
             'active' => ['admin/reporte*']
         ],
 
-        ['header' => 'Ajustes'],
+        ['header' => 'Configuraciones'],
         [
             'can' => 'admin.ajustes.index',
             'text' => 'Ajustes',
