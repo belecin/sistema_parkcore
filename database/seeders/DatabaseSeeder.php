@@ -130,7 +130,7 @@ class DatabaseSeeder extends Seeder
         Espacio::create(['numero' => '30', 'estado' => 'libre',]);
         Espacio::create(['numero' => '31', 'estado' => 'libre',]);
         Espacio::create(['numero' => '32', 'estado' => 'libre',]);
-        Espacio::create(['numero' => '50', 'estado' => 'libre',]);
+        Espacio::create(['numero' => '33', 'estado' => 'libre',]);
 
         Tarifa::create(['nombre'=>'regular', 'tipo'=>'hora', 'cantidad'=>'1',  'costo'=>'5',   'minutos_de_gracia'=>'30']);
         Tarifa::create(['nombre'=>'regular', 'tipo'=>'hora', 'cantidad'=>'2',  'costo'=>'10',  'minutos_de_gracia'=>'30']);

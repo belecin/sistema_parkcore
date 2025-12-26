@@ -30,7 +30,7 @@
         }
         
         .header h1 {
-            color: #1f7e0f;
+            color: #4c5f49;
             font-size: 24px;
             margin-bottom: 5px;
         }
@@ -60,7 +60,7 @@
         }
         
         .info-value {
-            color: #1f7e0f;
+            color: #4c5f49;
             font-weight: bold;
         }
         
@@ -127,7 +127,7 @@
         }
         
         table thead {
-            background-color: #1f7e0f;
+            background-color: #4c5f49;
             color: white;
         }
         
@@ -136,7 +136,7 @@
             text-align: left;
             font-size: 12px;
             font-weight: bold;
-            border: 1px solid #1f7e0f;
+            border: 1px solid #4c5f49;
         }
         
         table td {
@@ -174,11 +174,11 @@
         .total-row {
             font-weight: bold;
             background-color: #e8f5e9;
-            color: #1f7e0f;
+            color: #4c5f49;
         }
         
         .total-row td {
-            border: 2px solid #1f7e0f;
+            border: 2px solid #4c5f49;
         }
         
         .footer {
