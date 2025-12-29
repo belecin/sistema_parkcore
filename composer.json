@@ -86,13 +86,15 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform-check": false,
-        "platform": {
-            "php": "8.2.0",
-            "ext-gd": "7.4.33"
-        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "ext-gd": "8.0",
+            "php": "8.2"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
