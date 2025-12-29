@@ -29,14 +29,14 @@ class DatabaseSeeder extends Seeder
         //creamos un seeder 
         Ajuste::create([
             'nombre' => 'Sistema de estacionamiento',
-            'descripcion' => 'Sistema de estacionamiento ParkCore, con reporte financiero',
+            'descripcion' => 'ParkCore, sistema de estacionamiento con seguridad, control y confianza en cada espacio.',
             'sucursal' => 'Central',
-            'direccion' => 'Jr. Juli',
+            'direccion' => 'Jr. Juli #895',
             'telefonos' => '958158232',
             'logo' => 'TIyROUVPObLeewevnuGt19mVH9CLn7jkndRt3V3E.png',
             'logo_auto' => 'bxj6K6tc9J8BTzHp1Qgz7GDjCrHqBaFOYSk1s1mq.png',
             'divisa' => 'S/.',
-            'correo' => 'belen@gmail.com',
+            'correo' => 'parkcore68@gmail.com',
             'pagina_web' => 'https://parkcore.com',
         ]);
 
