@@ -1,0 +1,62 @@
+# ============================================
+# .dockerignore - Sistema ParkCore
+# ============================================
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules (se instala en el build)
+node_modules
+
+# Vendor (se instala en el build)
+vendor
+
+# Laravel cache/logs locales
+storage/app/*
+!storage/app/.gitkeep
+storage/framework/cache/*
+!storage/framework/cache/.gitkeep
+storage/framework/sessions/*
+!storage/framework/sessions/.gitkeep
+storage/framework/views/*
+!storage/framework/views/.gitkeep
+storage/logs/*
+!storage/logs/.gitkeep
+
+# Testing
+.phpunit.result.cache
+phpunit.xml
+
+# Env local (se usa el del docker-compose)
+.env
+.env.backup
+.env.local
+
+# Build files
+public/hot
+public/storage
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Docker files in production
+docker-compose.override.yml
+
+# Misc
+*.log
+npm-debug.log
+yarn-error.log
